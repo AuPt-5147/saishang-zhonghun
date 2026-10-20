@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-canvas-width="1440" data-canvas-height="900">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>塞上忠魂 · 宁夏革命烈士精神数字画廊</title>
+<!-- 字体已改为系统字体栈：Noto Serif SC / 宋体，Noto Sans SC / 苹方，避免外部依赖 -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%238c1d13'/%3E%3Cpath d='M16 5l2.6 6.2 6.7.5-5.1 4.3 1.6 6.5L16 19.2l-5.8 3.3 1.6-6.5-5.1-4.3 6.7-.5z' fill='%23d8b36a'/%3E%3C/svg%3E">
+<style>
+/* ============ 基础变量 ============ */
+:root{
+  --ink:#160c0a;
+  --dark:#1f110d;
+  --panel:#261410;
+  --panel-2:#2f1813;
+  --red:#8c1d13;
+  --red-2:#a82417;
+  --cinnabar:#c1272d;
+  --gold:#c9a24b;
+  --gold-soft:#ddc08a;
+  --gold-bright:#ecd39a;
+  --paper:#f4ecdd;
+  --paper-dim:#cbbfa9;
+  --muted:#a99882;
+  --line:rgba(201,162,75,.38);
+  --serif:'Noto Serif SC','Songti SC','STSong','SimSun',serif;
+  --sans:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  --w:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--ink);
+  color:var(--paper);
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:var(--cinnabar);color:#fff}
+
+/* 宣纸噪点纹理 */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ============ 顶部导航 ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .4s,border-color .4s;
+  border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(18,10,8,.92);backdrop-filter:blur(10px);border-bottom-color:var(--line)}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 24px;height:66px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-weight:700;letter-spacing:.12em}
+.brand .star{width:26px;height:26px;flex:none}
+.brand small{display:block;font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:.3em;color:var(--gold-soft)}
+.nav-links{display:flex;gap:6px}
+.nav-links a{font-size:14px;letter-spacing:.14em;color:var(--paper-dim);padding:8px 14px;position:relative;transition:color .3s}
+.nav-links a:hover{color:var(--gold-bright)}
+.nav-links a::after{content:"";position:absolute;left:14px;right:14px;bottom:2px;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .3s}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-toggle{display:none;flex-direction:column;gap:5px;padding:8px}
+.nav-toggle span{width:22px;height:2px;background:var(--gold-soft);display:block;transition:.3s}
+
+/* ============ Hero ============ */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kenburns 22s ease-out forwards;transform-origin:center 60%}
+@keyframes kenburns{from{transform:scale(1.16)}to{transform:scale(1.04)}}
+.hero-mask{position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(18,10,8,.72) 0%,rgba(18,10,8,.35) 45%,rgba(18,10,8,.92) 100%),
+    radial-gradient(ellipse at center,transparent 30%,rgba(18,10,8,.5) 100%)}
+.hero-mountain{position:absolute;left:0;right:0;bottom:0;height:140px;
+  background:linear-gradient(180deg,transparent,var(--ink));}
+.hero-inner{position:relative;z-index:2;padding:110px 24px 90px;max-width:980px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:14px;font-size:13px;letter-spacing:.42em;color:var(--gold-soft);
+  opacity:0;animation:rise 1.1s .3s cubic-bezier(.22,1,.36,1) forwards}
+.hero-eyebrow::before,.hero-eyebrow::after{content:"";width:42px;height:1px;background:var(--gold)}
+.hero-title{font-family:var(--serif);font-weight:900;font-size:clamp(58px,11vw,132px);line-height:1.12;
+  letter-spacing:.18em;margin:26px 0 8px;color:var(--paper);
+  text-shadow:0 4px 40px rgba(0,0,0,.6);
+  opacity:0;animation:rise 1.2s .55s cubic-bezier(.22,1,.36,1) forwards}
+.hero-title b{color:var(--gold-bright);font-weight:900}
+.hero-sub{font-family:var(--serif);font-size:clamp(17px,2.4vw,26px);letter-spacing:.5em;text-indent:.5em;color:var(--paper);
+  margin:18px 0 30px;font-weight:500;
+  opacity:0;animation:rise 1.2s .8s cubic-bezier(.22,1,.36,1) forwards}
+.hero-rule{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 28px;
+  animation:rule 1.4s 1.05s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes rule{to{width:min(520px,80%)}}
+.hero-desc{max-width:680px;margin:0 auto 42px;color:var(--paper-dim);font-size:15px;letter-spacing:.08em;
+  opacity:0;animation:rise 1.2s 1.25s cubic-bezier(.22,1,.36,1) forwards}
+.hero-cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;
+  opacity:0;animation:rise 1.2s 1.45s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes rise{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 34px;font-size:15px;letter-spacing:.22em;
+  transition:transform .25s,box-shadow .25s,background .25s;min-height:48px}
+.btn svg{width:17px;height:17px}
+.btn-primary{background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:#3a1407;font-weight:700;
+  box-shadow:0 8px 30px rgba(201,162,75,.28)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(201,162,75,.42)}
+.btn-ghost{border:1px solid var(--gold);color:var(--gold-soft)}
+.btn-ghost:hover{background:rgba(201,162,75,.12);transform:translateY(-2px)}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;color:var(--gold-soft);
+  display:flex;flex-direction:column;align-items:center;gap:8px;font-size:11px;letter-spacing:.35em;
+  opacity:0;animation:fade 1.5s 2s forwards}
+.scroll-hint i{width:1px;height:42px;background:linear-gradient(180deg,var(--gold),transparent);animation:drop 1.8s ease-in-out infinite}
+@keyframes drop{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1)}}
+@keyframes fade{to{opacity:1}}
+
+/* ============ 通用章节 ============ */
+.section{position:relative;padding:96px 24px;max-width:var(--w);margin:0 auto}
+.section-wide{max-width:var(--w)}
+.sec-head{display:flex;align-items:flex-end;gap:22px;margin-bottom:58px;flex-wrap:wrap}
+.sec-num{font-family:var(--serif);font-size:46px;font-weight:700;color:var(--red-2);line-height:1;
+  border:2px solid var(--gold);padding:10px 14px;letter-spacing:.05em}
+.sec-headtext h2{font-family:var(--serif);font-size:clamp(28px,4.4vw,42px);font-weight:700;letter-spacing:.16em;color:var(--paper)}
+.sec-headtext p{color:var(--gold-soft);font-size:13px;letter-spacing:.3em;margin-top:8px}
+.sec-head .head-line{flex:1;min-width:120px;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ 序厅 ============ */
+.intro{background:linear-gradient(180deg,var(--ink),#1b0e0b)}
+.intro-lead{max-width:860px;margin:0 auto 64px;text-align:center;font-family:var(--serif);font-size:clamp(17px,2.2vw,22px);
+  line-height:2.2;color:var(--paper-dim);letter-spacing:.06em}
+.intro-lead b{color:var(--gold-bright);font-weight:600}
+.coords{display:grid;grid-template-columns:1fr;gap:22px}
+.coord{position:relative;border:1px solid var(--line);background:linear-gradient(160deg,var(--panel),var(--dark));
+  padding:38px 32px 32px;overflow:hidden;transition:transform .35s,border-color .35s}
+.coord::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--cinnabar),var(--gold))}
+.coord:hover{transform:translateY(-5px);border-color:var(--gold)}
+.coord .yr{font-family:var(--serif);color:var(--gold);font-size:15px;letter-spacing:.2em;margin-bottom:10px}
+.coord h3{font-family:var(--serif);font-size:23px;letter-spacing:.14em;margin-bottom:14px;color:var(--paper)}
+.coord p{color:var(--muted);font-size:14.5px}
+.coord .ic{position:absolute;right:24px;top:24px;width:42px;height:42px;opacity:.55}
+
+/* ============ 烈士画廊 ============ */
+.martyrs{background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(140,29,19,.28),transparent 70%),var(--ink)}
+.martyr-wall{display:flex;flex-wrap:wrap;justify-content:center;gap:26px}
+.m-card{position:relative;width:296px;min-height:430px;border:1px solid var(--line);
+  background:linear-gradient(175deg,var(--panel-2) 0%,var(--dark) 78%);
+  padding:42px 28px 28px;display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .4s,box-shadow .4s,border-color .4s;text-align:center}
+.m-card:hover{transform:translateY(-8px);border-color:var(--gold);box-shadow:0 22px 50px rgba(0,0,0,.55)}
+.m-card .seal{position:absolute;top:18px;left:18px;width:40px;height:40px;background:var(--red);
+  display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:12px;color:var(--gold-bright);
+  line-height:1.15;letter-spacing:.08px;transform:rotate(-4deg);border:1px solid rgba(217,192,138,.5)}
+.m-card .pine{width:88px;height:88px;margin:6px auto 16px;opacity:.9}
+.m-card .star5{width:20px;height:20px;margin:0 auto 14px}
+.m-card h3{font-family:var(--serif);font-size:30px;font-weight:700;letter-spacing:.24em;text-indent:.24em;color:var(--gold-bright)}
+.m-card .meta{font-size:13px;color:var(--muted);letter-spacing:.1em;margin:12px 0 16px}
+.m-card .quote{font-family:var(--serif);font-size:15px;color:var(--paper-dim);line-height:2;flex:1;letter-spacing:.05em}
+.m-card .open{margin-top:20px;padding:11px 0;font-size:13.5px;letter-spacing:.25em;color:var(--gold-soft);
+  border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:9px;transition:color .3s,background .3s}
+.m-card .open:hover{color:var(--gold-bright);background:rgba(201,162,75,.08)}
+.m-card .open svg{width:15px;height:15px}
+.m-card.group-trio{background:linear-gradient(175deg,#341a13 0%,var(--dark) 78%)}
+.m-card.is-pioneer{background:linear-gradient(175deg,#1c2224 0%,#141414 78%);border-color:#4a5458}
+.m-card.is-pioneer:hover{border-color:#9fb6bd}
+.m-card.is-pioneer .seal{background:#2b3538;color:#cfe0e4;border-color:#7d949b}
+.m-card.is-pioneer .pine{opacity:.55}
+.m-card.is-pioneer h3{color:#dbe8eb}
+.pioneer-tag{position:absolute;top:18px;right:18px;font-size:11px;letter-spacing:.12em;color:#cfe0e4;
+  border:1px solid #7d949b;padding:4px 9px;background:rgba(43,53,56,.7)}
+.m-note{text-align:center;margin-top:38px;color:var(--muted);font-size:13px;letter-spacing:.12em}
+.m-note b{color:var(--gold-soft)}
+
+/* ============ 时间轴 ============ */
+.timeline-sec{background:linear-gradient(180deg,#1b0e0b,#170d0a)}
+.tl{display:grid;grid-template-columns:150px 34px 1fr;gap:0 18px;max-width:960px;margin:0 auto}
+.tl-row{display:contents}
+.tl-date{text-align:right;padding:26px 0;font-family:var(--serif);color:var(--gold);font-size:15px;line-height:1.7;letter-spacing:.06em}
+.tl-date b{display:block;font-size:19px;color:var(--gold-bright)}
+.tl-axis{position:relative}
+.tl-axis::before{content:"";position:absolute;left:0;right:0;top:0;bottom:0;width:2px;margin:0 auto;
+  background:linear-gradient(180deg,var(--gold),var(--cinnabar),var(--red));}
+.tl-dot{position:absolute;left:0;right:0;top:30px;width:14px;height:14px;margin:0 auto;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 0 4px rgba(201,162,75,.16);z-index:2}
+.tl-dot.red{background:var(--cinnabar);box-shadow:0 0 0 4px rgba(193,39,45,.22)}
+.tl-card{margin:14px 0 34px;border:1px solid var(--line);background:linear-gradient(160deg,var(--panel),var(--dark));
+  padding:24px 28px;transition:border-color .3s,transform .3s}
+.tl-card:hover{border-color:var(--gold);transform:translateX(4px)}
+.tl-card h3{font-family:var(--serif);font-size:20px;letter-spacing:.12em;color:var(--paper);margin-bottom:10px}
+.tl-card p{font-size:14.5px;color:var(--muted)}
+.tl-card p b{color:var(--gold-soft);font-weight:500}
+
+/* ============ 弹窗 ============ */
+.modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:24px}
+.modal.open{display:flex}
+.modal-mask{position:absolute;inset:0;background:rgba(10,5,4,.82);backdrop-filter:blur(6px);animation:fadein .3s}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal-panel{position:relative;width:min(720px,100%);max-height:88vh;overflow-y:auto;z-index:2;
+  background:linear-gradient(170deg,#2a1611,#1a0e0b);border:1px solid var(--gold);
+  box-shadow:0 30px 80px rgba(0,0,0,.7);animation:pop .45s cubic-bezier(.22,1,.36,1)}
+@keyframes pop{from{opacity:0;transform:translateY(40px) scale(.97)}to{opacity:1;transform:none}}
+.modal-banner{height:150px;overflow:hidden;position:relative;border-bottom:1px solid var(--line)}
+.modal-banner img{width:100%;height:100%;object-fit:cover}
+.modal-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,14,11,.1),rgba(26,14,11,.92))}
+.modal-body{padding:30px 36px 38px}
+.modal-close{position:absolute;top:14px;right:14px;z-index:3;width:40px;height:40px;border:1px solid var(--line);
+  background:rgba(20,10,8,.7);display:flex;align-items:center;justify-content:center;color:var(--gold-soft);transition:.3s}
+.modal-close:hover{background:var(--red);color:#fff;transform:rotate(90deg)}
+.modal-title{font-family:var(--serif);font-size:34px;font-weight:700;letter-spacing:.2em;color:var(--gold-bright)}
+.m-pioneer-flag{display:block;font-family:var(--sans);font-size:13px;font-weight:400;letter-spacing:.2em;color:#cfe0e4;
+  border:1px solid #7d949b;width:max-content;padding:4px 14px;margin-bottom:12px}
+.modal-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin:14px 0 6px;font-size:13.5px;color:var(--muted)}
+.modal-meta span{display:flex;align-items:center;gap:7px}
+.modal-meta svg{width:15px;height:15px;color:var(--gold)}
+.speak-btn{margin:20px 0 8px;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold);
+  padding:11px 22px;font-size:13.5px;letter-spacing:.2em;color:var(--gold-soft);transition:.3s}
+.speak-btn:hover{background:rgba(201,162,75,.12)}
+.speak-btn.playing{background:var(--red);border-color:var(--red);color:#fff}
+.speak-btn .bars{display:none;gap:3px;align-items:flex-end;height:14px}
+.speak-btn.playing .bars{display:flex}
+.speak-btn.playing .icon-sound{display:none}
+.bars i{width:3px;background:currentColor;animation:eq 1s ease-in-out infinite}
+.bars i:nth-child(1){height:6px;animation-delay:.1s}.bars i:nth-child(2){height:12px;animation-delay:.3s}.bars i:nth-child(3){height:9px;animation-delay:.5s}.bars i:nth-child(4){height:14px;animation-delay:.2s}
+@keyframes eq{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.modal-text{margin-top:18px;font-size:15px;color:var(--paper-dim)}
+.modal-text h4{font-family:var(--serif);color:var(--gold);font-size:16px;letter-spacing:.12em;margin:22px 0 8px;
+  display:flex;align-items:center;gap:10px}
+.modal-text h4::before{content:"";width:16px;height:2px;background:var(--gold)}
+.modal-text p{margin-bottom:8px}
+.modal-text .quote-line{font-family:var(--serif);font-size:17px;color:var(--gold-bright);text-align:center;letter-spacing:.15em;
+  padding:18px 0;margin:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.modal-src{margin-top:24px;font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px}
+
+/* ============ 红色地图 ============ */
+.atlas{background:radial-gradient(ellipse 70% 50% at 30% 40%,rgba(140,29,19,.22),transparent 70%),#150c09}
+.atlas-grid{display:grid;grid-template-columns:1fr;gap:30px;align-items:stretch}
+.map-box{position:relative;border:1px solid var(--line);background:linear-gradient(160deg,#1d100c,#140b09);padding:20px}
+.map-box svg{width:100%;height:auto;overflow:visible}
+.nx-outline{fill:rgba(140,29,19,.22);stroke:var(--gold);stroke-width:2;stroke-dasharray:4 3;transition:fill .3s}
+.map-box:hover .nx-outline{fill:rgba(140,29,19,.3)}
+.river{fill:none;stroke:#5e8a9e;stroke-width:2.4;stroke-linecap:round;opacity:.7;stroke-dasharray:2 6;animation:flow 3s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-24}}
+.map-label{fill:var(--paper-dim);font-size:13px;letter-spacing:.2em;font-family:var(--serif)}
+.map-point{cursor:pointer}
+.map-point .halo{fill:none;stroke-width:2;opacity:.6;transform-origin:center;transform-box:fill-box;animation:halo 2.4s ease-out infinite}
+.map-point .core{transition:.3s}
+.map-point text{font-size:12.5px;fill:var(--paper);letter-spacing:.06em;font-family:var(--sans);pointer-events:none}
+.map-point.active .halo{stroke:var(--gold-bright);animation-duration:1.6s}
+.map-point.active .core{fill:var(--gold-bright)}
+.map-point.active text{fill:var(--gold-bright);font-weight:700}
+.map-point:not(.active) .halo{stroke:var(--cinnabar)}
+.map-point:not(.active) .core{fill:var(--cinnabar)}
+.map-point:hover .core{r:9}
+@keyframes halo{0%{r:7;opacity:.8}100%{r:18;opacity:0}}
+.map-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted);letter-spacing:.08em}
+.map-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.site-panel{border:1px solid var(--line);background:linear-gradient(170deg,var(--panel),#170c09);display:flex;flex-direction:column;overflow:hidden}
+.site-img{position:relative;height:280px;overflow:hidden}
+.site-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s}
+.site-panel:hover .site-img img{transform:scale(1.05)}
+.site-img .tag-aigc{position:absolute;top:14px;left:14px;background:rgba(20,10,8,.82);border:1px solid var(--gold);
+  color:var(--gold-soft);font-size:11px;letter-spacing:.18em;padding:5px 12px}
+.site-body{padding:26px 28px 28px;flex:1;display:flex;flex-direction:column}
+.site-date{font-family:var(--serif);color:var(--gold);font-size:14px;letter-spacing:.15em}
+.site-body h3{font-family:var(--serif);font-size:25px;letter-spacing:.14em;margin:8px 0 4px;color:var(--paper)}
+.site-body .place{font-size:13px;color:var(--muted);margin-bottom:14px}
+.site-body p{font-size:14.5px;color:var(--paper-dim);flex:1}
+.site-actions{display:flex;gap:14px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.site-dots{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap}
+.site-chip{font-size:12.5px;letter-spacing:.1em;padding:8px 15px;border:1px solid var(--line);color:var(--muted);transition:.25s;min-height:38px}
+.site-chip:hover{color:var(--gold-soft);border-color:var(--gold)}
+.site-chip.active{background:var(--red);border-color:var(--red);color:#fff}
+.atlas-note{margin-top:22px;font-size:12.5px;color:var(--muted);text-align:center;letter-spacing:.1em}
+
+/* ============ 云祭厅 ============ */
+.memorial{position:relative;padding:100px 24px;background:linear-gradient(180deg,#150c09,rgba(18,10,8,.86)),var(--ink)}
+.mem-hero{position:relative;max-width:var(--w);margin:0 auto 60px;border:1px solid var(--line);overflow:hidden}
+.mem-hero img{width:100%;height:clamp(280px,46vw,480px);object-fit:cover;object-position:center 30%}
+.mem-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,10,8,.25),rgba(18,10,8,.85))}
+.mem-hero-text{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+  text-align:center;padding:34px 24px;z-index:2}
+.mem-hero-text h2{font-family:var(--serif);font-size:clamp(26px,4vw,40px);letter-spacing:.2em;color:var(--gold-bright)}
+.mem-hero-text p{color:var(--paper-dim);margin-top:12px;font-size:14.5px;letter-spacing:.1em;max-width:640px}
+.mem-grid{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:1fr;gap:26px}
+.tribute{border:1px solid var(--line);background:linear-gradient(170deg,var(--panel),#180d0a);padding:36px 30px;text-align:center}
+.tribute h3{font-family:var(--serif);font-size:22px;letter-spacing:.18em;margin-bottom:10px}
+.tribute p{font-size:13.5px;color:var(--muted);margin-bottom:24px}
+.flower-btn{position:relative;width:118px;height:118px;border-radius:50%;margin:0 auto;
+  background:radial-gradient(circle at 35% 30%,#c93b3b,var(--red));border:1px solid var(--gold);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;
+  box-shadow:0 12px 40px rgba(193,39,45,.4);transition:transform .25s;overflow:hidden}
+.flower-btn:hover{transform:scale(1.05)}
+.flower-btn:active{transform:scale(.95)}
+.flower-btn svg{width:40px;height:40px}
+.flower-btn span{font-size:13px;letter-spacing:.25em;margin-top:4px}
+.flower-count{margin-top:22px;font-family:var(--serif);font-size:17px;color:var(--gold-bright)}
+.flower-count b{font-size:26px}
+.flower-fly{position:fixed;width:26px;height:26px;pointer-events:none;z-index:90;animation:fly 1.8s ease-in forwards}
+@keyframes fly{0%{opacity:1;transform:translateY(0) scale(.6) rotate(0)}100%{opacity:0;transform:translateY(-220px) scale(1.3) rotate(40deg)}}
+.msg-board{border:1px solid var(--line);background:linear-gradient(170deg,var(--panel),#180d0a);padding:32px 30px}
+.msg-board h3{font-family:var(--serif);font-size:22px;letter-spacing:.18em;margin-bottom:20px}
+.msg-form{display:flex;gap:12px;flex-wrap:wrap}
+.msg-form input,.msg-form textarea{background:#180d0a;border:1px solid var(--line);color:var(--paper);
+  font-family:var(--sans);padding:12px 14px;font-size:14px;outline:none;transition:border-color .3s}
+.msg-form input:focus,.msg-form textarea:focus{border-color:var(--gold)}
+.msg-form input{width:160px}
+.msg-form textarea{flex:1;min-width:220px;height:46px;resize:vertical}
+.msg-form button{background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:#3a1407;font-weight:700;
+  padding:0 26px;letter-spacing:.15em;font-size:14px;min-height:46px}
+.msg-list{margin-top:22px;display:flex;flex-direction:column;gap:14px;max-height:280px;overflow-y:auto;padding-right:6px}
+.msg-item{border-left:3px solid var(--red);background:rgba(255,255,255,.03);padding:12px 16px}
+.msg-item .who{font-family:var(--serif);color:var(--gold-soft);font-size:14px;letter-spacing:.1em}
+.msg-item .when{float:right;font-size:11px;color:var(--muted)}
+.msg-item .txt{font-size:14px;color:var(--paper-dim);margin-top:4px}
+.msg-empty{font-size:13.5px;color:var(--muted);text-align:center;padding:24px 0}
+.oath{max-width:var(--w);margin:50px auto 0;text-align:center;border:1px solid var(--line);
+  padding:44px 28px;background:linear-gradient(160deg,rgba(140,29,19,.3),rgba(31,17,13,.4))}
+.oath .seal-big{width:74px;height:74px;margin:0 auto 20px;background:var(--red);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-family:var(--serif);color:var(--gold-bright);
+  font-size:19px;letter-spacing:.1em;line-height:1.3;border-radius:8px;transform:rotate(-3deg)}
+.oath p{font-family:var(--serif);font-size:clamp(16px,2.1vw,20px);color:var(--paper);line-height:2.3;letter-spacing:.08em;max-width:720px;margin:0 auto}
+.oath .sig{margin-top:20px;font-size:13px;color:var(--gold-soft);letter-spacing:.25em}
+
+/* ============ 页脚 ============ */
+.footer{border-top:1px solid var(--line);background:#100806;padding:56px 24px 30px}
+.footer-inner{max-width:var(--w);margin:0 auto}
+.footer h4{font-family:var(--serif);font-size:15px;letter-spacing:.2em;color:var(--gold);margin-bottom:16px}
+.src-list{columns:1;display:grid;grid-template-columns:1fr;gap:8px 36px;margin-bottom:30px}
+.src-list a{font-size:12.5px;color:var(--muted);display:flex;gap:8px;line-height:1.7;transition:color .3s;word-break:break-all}
+.src-list a:hover{color:var(--gold-soft)}
+.src-list a::before{content:"※";color:var(--gold);flex:none}
+.footer-note{font-size:12px;color:#6f6252;line-height:2;border-top:1px dashed var(--line);padding-top:20px;letter-spacing:.05em}
+.footer-copy{text-align:center;margin-top:26px;font-size:12px;color:#6f6252;letter-spacing:.18em}
+
+/* ============ 响应式 ============ */
+@media(min-width:768px){
+  .coords{grid-template-columns:repeat(3,1fr)}
+  .atlas-grid{grid-template-columns:1.05fr .95fr}
+  .mem-grid{grid-template-columns:.85fr 1.15fr}
+  .src-list{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:1024px){
+  .src-list{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:767px){
+  .nav-links{position:fixed;top:66px;left:0;right:0;background:rgba(18,10,8,.98);flex-direction:column;
+    padding:14px 0;border-bottom:1px solid var(--line);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:14px 28px;font-size:16px}
+  .nav-toggle{display:flex}
+  .section{padding:72px 18px}
+  .tl{grid-template-columns:26px 1fr;gap:0 16px}
+  .tl-date{grid-column:1 / 3;grid-row:1;text-align:left;padding:0 0 4px 44px}
+  .tl-axis{grid-column:1;grid-row:1 / span 2}
+  .tl-card{grid-column:2;grid-row:2}
+  .modal-body{padding:24px 22px 30px}
+  .modal-banner{height:120px}
+  .site-img{height:220px}
+  .msg-form input{width:100%}
+  .msg-form input,.msg-form textarea{font-size:16px}
+  .hero-eyebrow::before,.hero-eyebrow::after{width:20px}
+  .scroll-hint{display:none}
+  .hero-inner{padding-top:96px;padding-bottom:60px}
+}
+/* ============ 诗词铸魂 ============ */
+.poem-wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:36px;align-items:stretch}
+.poem-scroll{position:relative;border:1px solid var(--gold);
+  background:linear-gradient(160deg,#2c1611 0%,#1c0e0a 100%);
+  padding:56px 48px 46px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.poem-scroll::before,.poem-scroll::after{content:"";position:absolute;left:24px;right:24px;height:10px;
+  background:repeating-linear-gradient(90deg,transparent 0 16px,var(--gold) 16px 22px,transparent 22px 30px);opacity:.7}
+.poem-scroll::before{top:16px}.poem-scroll::after{bottom:16px}
+.poem-title{font-family:var(--serif);font-size:28px;letter-spacing:.22em;color:var(--gold-bright);margin-bottom:30px}
+.poem-body p{font-family:var(--serif);font-size:23px;line-height:2.1;color:var(--paper);letter-spacing:.08em}
+.poem-body .stanza{margin-top:14px}
+.poem-sign{margin-top:28px;color:var(--gold-soft);font-size:15px;letter-spacing:.15em}
+.poem-notes{border:1px solid var(--line);padding:36px 38px;background:rgba(38,20,16,.5);display:flex;flex-direction:column;gap:16px}
+.poem-notes h4{font-family:var(--serif);font-size:20px;color:var(--gold-bright);letter-spacing:.15em;margin-bottom:4px}
+.poem-notes p{font-size:15px;line-height:1.95;color:var(--paper-dim)}
+.poem-notes b{color:var(--gold-soft)}
+.poem-key{margin-top:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.poem-key span{display:block;text-align:center;border:1px solid var(--gold);color:var(--gold-bright);font-family:var(--serif);font-size:15px;padding:10px 0;letter-spacing:.1em}
+.poem-key i{display:block;text-align:center;font-style:normal;color:var(--muted);font-size:12px;padding-top:7px}
+@media(max-width:900px){.poem-wrap{grid-template-columns:1fr;gap:22px}.poem-scroll{padding:44px 26px 38px}.poem-body p{font-size:20px}.poem-key{grid-template-columns:1fr}}
+
+/* ============ 回汉同心 ============ */
+.unity-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.unity-card{position:relative;border:1px solid var(--line);background:var(--panel);padding:34px 30px 30px;transition:border-color .3s,transform .3s}
+.unity-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.unity-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.unity-card.highlight{border-color:var(--gold);background:linear-gradient(160deg,rgba(140,29,19,.35),rgba(38,20,16,.9))}
+.uc-year{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--gold);margin-bottom:14px}
+.unity-card h3{font-family:var(--serif);font-size:21px;color:var(--gold-bright);letter-spacing:.08em;margin-bottom:14px}
+.unity-card p{font-size:14.5px;line-height:1.95;color:var(--paper-dim)}
+.unity-card b{color:var(--gold-soft)}
+.unity-quote{position:relative;margin-top:34px;border:1px solid var(--line);padding:36px 50px 32px 86px;background:rgba(38,20,16,.45)}
+.unity-quote .uq-mark{position:absolute;top:30px;left:38px;opacity:.9}
+.unity-quote p{font-family:var(--serif);font-size:18px;line-height:2;color:var(--paper-dim);letter-spacing:.04em}
+.unity-quote b{color:var(--gold-bright)}
+@media(max-width:900px){.unity-grid{grid-template-columns:1fr}.unity-quote{padding:30px 24px 26px 60px}.unity-quote .uq-mark{left:20px}.unity-quote p{font-size:15.5px}}
+
+/* ============ 红色场馆 ============ */
+.venue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.venue-card{position:relative;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#1d100c);padding:30px 28px 28px;transition:border-color .3s,transform .3s}
+.venue-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.venue-card::after{content:"";position:absolute;right:0;bottom:0;width:0;height:2px;background:var(--gold);transition:width .35s}
+.venue-card:hover::after{width:100%}
+.vc-badge{display:inline-block;font-size:12px;letter-spacing:.2em;color:var(--gold-bright);border:1px solid var(--gold);
+  padding:4px 12px;margin-bottom:16px}
+.venue-card h3{font-family:var(--serif);font-size:20px;color:var(--paper);letter-spacing:.06em;margin-bottom:8px;line-height:1.4}
+.vc-place{font-size:12.5px;color:var(--gold);letter-spacing:.1em;margin-bottom:14px}
+.venue-card p{font-size:14px;line-height:1.9;color:var(--paper-dim)}
+.vc-addr{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--gold-soft);margin:12px 0 6px;line-height:1.7}
+.vc-addr svg{width:15px;height:15px;flex:none;margin-top:3px;stroke:var(--gold)}
+.vc-meta{font-size:11.5px;color:var(--muted);letter-spacing:.05em;margin-bottom:4px}
+.vc-map{display:inline-flex;align-items:center;gap:8px;margin-top:16px;border:1px solid var(--gold);
+  padding:10px 20px;color:var(--gold-bright);font-size:13px;letter-spacing:.18em;text-decoration:none;
+  transition:.25s;min-height:44px;cursor:pointer}
+.vc-map:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.vc-map svg{width:15px;height:15px;flex:none}
+@media(max-width:900px){.venue-grid{grid-template-columns:1fr}}
+
+/* ============ 3D沉浸式展厅（独立版移植） ============ */
+.hall-sec{background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(140,29,19,.22),transparent 70%),#140c09}
+.hall3d{position:relative;width:100%;height:100vh;min-height:560px;max-height:860px;background:#0a0504;overflow:hidden;border:1px solid var(--line)}
+#threeWrap{position:absolute;inset:0;cursor:grab;touch-action:none}
+#threeWrap.dragging{cursor:grabbing}
+#threeWrap canvas{display:block}
+.hall-loading{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(circle at 50% 40%,#2a1410,#0a0504);transition:opacity .8s ease}
+.hall-loading.done{opacity:0;pointer-events:none}
+.hall-loading .big-star{width:50px;height:50px;animation:hstarspin 6s linear infinite}
+@keyframes hstarspin{to{transform:rotate(360deg)}}
+.hall-loading .lt{font-family:var(--serif);font-size:20px;color:var(--gold-bright);letter-spacing:6px}
+.hall-loading .ls{font-size:12px;color:var(--muted);letter-spacing:2px}
+.loadbar{width:240px;height:3px;background:rgba(201,162,75,.2);border-radius:2px;overflow:hidden}
+.loadbar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--cinnabar),var(--gold));transition:width .3s}
+.load-pct{font-size:12px;color:var(--gold-soft);letter-spacing:1px}
+.hall-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:10;display:flex;gap:14px;align-items:center;padding:9px 18px;background:rgba(22,12,10,.72);border:1px solid rgba(201,162,75,.25);border-radius:999px;font-size:12px;color:var(--muted);letter-spacing:1px;pointer-events:none;transition:opacity .6s}
+.hall-hint.fade{opacity:0}
+.hall-hint b{color:var(--gold-soft);font-weight:500}
+.hall-ctrl{position:absolute;right:18px;bottom:18px;z-index:10;display:flex;gap:10px}
+.hall-ctrl button{padding:9px 16px;min-height:40px;background:rgba(140,29,19,.85);border:1px solid rgba(201,162,75,.4);color:var(--gold-bright);border-radius:6px;font-family:inherit;font-size:13px;cursor:pointer;letter-spacing:2px;transition:.25s}
+.hall-ctrl button:hover{background:var(--cinnabar)}
+.art-info{position:absolute;right:24px;top:22px;width:360px;max-width:calc(100% - 48px);z-index:15;background:linear-gradient(160deg,rgba(38,20,16,.96),rgba(31,17,13,.96));border:1px solid rgba(201,162,75,.4);border-radius:10px;padding:22px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.5);opacity:0;pointer-events:none;transform:translateX(20px);transition:.4s}
+.art-info.show{opacity:1;pointer-events:auto;transform:translateX(0)}
+.art-info .close{position:absolute;top:10px;right:12px;width:28px;height:28px;border:none;background:transparent;color:var(--muted);font-size:18px;cursor:pointer;line-height:1}
+.art-info .close:hover{color:var(--gold)}
+.art-date{font-size:12px;color:var(--gold);letter-spacing:2px;margin-bottom:6px}
+.art-title{font-family:var(--serif);font-size:22px;color:var(--gold-bright);font-weight:700;margin-bottom:10px}
+.art-desc{font-size:13.5px;color:var(--paper);line-height:1.9;margin-bottom:16px}
+.art-actions{display:flex;gap:10px}
+.art-actions button{flex:1;padding:10px;min-height:44px;border-radius:6px;font-family:inherit;font-size:13px;cursor:pointer;letter-spacing:1px;border:1px solid rgba(201,162,75,.4);transition:.25s}
+.btn-speak{background:var(--red);color:var(--gold-bright)}
+.btn-speak:hover{background:var(--cinnabar)}
+.btn-speak.playing{background:#6a1010;border-color:#ffcf8a}
+.btn-back{background:transparent;color:var(--muted)}
+.btn-back:hover{color:var(--gold-bright);border-color:var(--gold)}
+.tour-end{position:absolute;inset:0;z-index:25;display:flex;align-items:center;justify-content:center;background:rgba(10,5,4,.55);opacity:0;pointer-events:none;transition:opacity .5s}
+.tour-end.show{opacity:1;pointer-events:auto}
+.te-inner{text-align:center;padding:40px 56px;background:linear-gradient(160deg,rgba(38,20,16,.97),rgba(31,17,13,.97));border:1px solid rgba(201,162,75,.5);border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.te-inner svg{width:46px;height:46px;margin:0 auto 14px}
+.te-title{font-family:var(--serif);font-size:22px;color:var(--gold-bright);letter-spacing:3px;margin-bottom:6px}
+.te-sub{font-size:12px;color:var(--muted);letter-spacing:2px;margin-bottom:22px}
+.te-inner button{padding:11px 34px;min-height:44px;background:var(--red);border:1px solid rgba(201,162,75,.5);color:var(--gold-bright);border-radius:6px;font-family:inherit;font-size:14px;letter-spacing:3px;cursor:pointer;transition:.25s}
+.te-inner button:hover{background:var(--cinnabar)}
+.fallback-wall{display:none;background:linear-gradient(180deg,#1f110d,#160c0a);padding:60px 24px 50px}
+.fallback-wall.show{display:block}
+.fallback-wall h2{font-family:var(--serif);text-align:center;color:var(--gold-bright);font-size:26px;letter-spacing:4px;margin-bottom:6px}
+.fallback-wall .fs{text-align:center;color:var(--muted);font-size:12px;letter-spacing:2px;margin-bottom:32px}
+.fb-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:1000px){.fb-grid{grid-template-columns:repeat(2,1fr)}}
+.fb-card{background:var(--panel);border:1px solid rgba(201,162,75,.3);border-radius:8px;overflow:hidden}
+.fb-card img{width:100%;height:170px;object-fit:cover;display:block}
+.fb-card .fb-body{padding:14px}
+.fb-card .fb-date{font-size:11px;color:var(--gold);letter-spacing:1px}
+.fb-card .fb-title{font-family:var(--serif);font-size:16px;color:var(--gold-bright);margin:4px 0 6px}
+.fb-card .fb-desc{font-size:12.5px;color:var(--muted);line-height:1.7}
+.hall-list{max-width:1100px;margin:56px auto 0;padding:0 4px}
+.cl-head{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.cl-seal{width:52px;height:52px;display:flex;align-items:center;justify-content:center;border:2px solid var(--gold);color:var(--gold);font-family:var(--serif);font-size:22px;font-weight:700;flex:none}
+.cl-head h3{font-family:var(--serif);font-size:28px;color:var(--gold-bright);letter-spacing:3px}
+.cl-en{font-size:12px;color:var(--muted);letter-spacing:3px;margin:0 0 30px 68px}
+.list-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.list-item{display:flex;gap:16px;background:var(--panel);border:1px solid rgba(201,162,75,.22);border-radius:8px;padding:14px;transition:.3s}
+.list-item:hover{border-color:var(--gold);transform:translateY(-2px)}
+.list-item .no{font-family:var(--serif);font-size:13px;color:var(--gold);flex:none;line-height:1.4}
+.list-item .lt{font-family:var(--serif);font-size:17px;color:var(--gold-bright);margin-bottom:3px}
+.list-item .ld{font-size:12.5px;color:var(--muted);line-height:1.7}
+.list-item .ld b{color:var(--gold-soft);font-weight:500}
+.asset-pool{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;left:-9999px;top:-9999px}
+.asset-pool img{width:1px;height:1px}
+.poster-btn{margin-top:16px;width:100%;border:1px solid var(--gold);padding:13px 0;color:var(--gold-soft);font-size:14px;
+  letter-spacing:.2em;display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:.25s;min-height:48px}
+.poster-btn:hover{background:rgba(201,162,75,.12)}
+@media(max-width:767px){
+  .hall3d{height:100vh;max-height:760px}
+  .hall-ctrl{left:50%;right:auto;transform:translateX(-50%);bottom:14px;white-space:nowrap}
+  .hall-ctrl button{padding:8px 14px;font-size:12px}
+  .hall-hint{bottom:74px;max-width:92%;padding:8px 12px;font-size:11px;flex-wrap:wrap;justify-content:center;row-gap:4px}
+  .art-info{right:12px;left:12px;top:16px;width:auto}
+  .te-inner{padding:30px 34px}
+  .te-title{font-size:19px}
+  .fb-grid{grid-template-columns:1fr}
+  .list-grid{grid-template-columns:1fr}
+  .hall-list{margin-top:40px}
+  .cl-head h3{font-size:23px}
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#100806}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--cinnabar),var(--gold));border:2px solid #100806;border-radius:6px}
+html{scrollbar-color:var(--red) #100806;scrollbar-width:thin}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+  .hero-eyebrow,.hero-title,.hero-sub,.hero-desc,.hero-cta,.scroll-hint{opacity:1}
+}
+@media print{
+  .reveal{opacity:1;transform:none}
+  .hall3d,.fallback-wall{display:none}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- ============ 导航 ============ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <svg class="star" viewBox="0 0 32 32"><path d="M16 3l2.9 6.9 7.4.6-5.6 4.8 1.8 7.2L16 18.6l-6.5 3.9 1.8-7.2L5.7 10.5l7.4-.6z" fill="#c9a24b"/><path d="M16 11.5l1.2 2.9 3.1.2-2.3 2 .7 3-2.7-1.6-2.7 1.6.7-3-2.3-2 3.1-.2z" fill="#8c1d13"/></svg>
+      <span>塞上忠魂<small>宁夏革命烈士精神数字画廊</small></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#intro">序厅</a>
+      <a href="#martyrs">英烈</a>
+      <a href="#timeline">岁月</a>
+      <a href="#classic">诗词</a>
+      <a href="#atlas">地图</a>
+      <a href="#unity">同心</a>
+      <a href="#hall3d">3D展厅</a>
+      <a href="#venues">场馆</a>
+      <a href="#memorial">云祭</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ============ 首屏 ============ -->
+<header class="hero">
+  <img class="hero-img" src="assets/media/01-dwynsb.jpg" alt="六盘山红旗漫卷套色版画">
+  <div class="hero-mask"></div>
+  <div class="hero-mountain"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">宁 夏 · 1935 — 1949</div>
+    <h1 class="hero-title">塞上<b>忠魂</b></h1>
+    <div class="hero-sub">宁夏革命烈士精神数字画廊</div>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">从六盘山的红旗到任山河的丰碑，从盐池的盐湖到银川的长夜——<br>以数字之名，重现塞上热土上永不褪色的忠诚信仰。</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#martyrs">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h14v18l-7-4-7 4z"/></svg>
+        步入英烈长廊
+      </a>
+      <a class="btn btn-ghost" href="#atlas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        红色地图导览
+      </a>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>向下参观</span><i></i></div>
+</header>
+
+<!-- ============ 序厅 ============ -->
+<section class="section intro" id="intro">
+  <div class="sec-head reveal">
+    <div class="sec-num">壹</div>
+    <div class="sec-headtext"><h2>序厅 · 为什么是宁夏</h2><p>PROLOGUE</p></div>
+    <div class="head-line"></div>
+  </div>
+  <p class="intro-lead reveal">在中国革命的版图上，宁夏是<b>红军长征的结束地</b>，是<b>陕甘宁边区的重要组成部分</b>，是<b>党的民族区域自治制度的重要实践地</b>，也是<b>人民解放军解放宁夏的决胜之地</b>。这片被黄河滋养、被群山环抱的塞上热土，留下了共产党人、红军将士与回汉群众用热血写就的忠诚篇章。</p>
+  <div class="coords">
+    <div class="coord reveal">
+      <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#c9a24b" stroke-width="1.6"><path d="M6 36c6-2 10-14 16-14s10 12 16 10" /><path d="M4 36h40M22 22l4-8 4 8"/><path d="M26 14V8"/></svg>
+      <div class="yr">1936 · 10 · 22</div>
+      <h3>长征结束地 · 将台堡</h3>
+      <p>红二方面军总指挥部与红一方面军主力在西吉将台堡会师，这是红军长征最后一次会师，标志着震惊中外的两万五千里长征胜利结束。</p>
+    </div>
+    <div class="coord reveal">
+      <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#c9a24b" stroke-width="1.6"><path d="M8 34h32M10 34V18l14-8 14 8v16"/><path d="M18 34v-9h12v9"/><path d="M24 10v4"/></svg>
+      <div class="yr">1936 · 6 · 21</div>
+      <h3>陕甘宁边区的“宁” · 盐池</h3>
+      <p>西征红军解放盐池县城，建立宁夏第一个县级红色政权。盐池是宁夏唯一的革命老区，红旗在这里一直坚持到全国解放，成为边区经济支柱。</p>
+    </div>
+    <div class="coord reveal">
+      <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#c9a24b" stroke-width="1.6"><path d="M10 38l14-26 14 26z"/><path d="M17 27h14M24 12v26"/><path d="M8 38h32"/></svg>
+      <div class="yr">1949 · 8 · 1 — 9 · 23</div>
+      <h3>解放宁夏决胜之地 · 任山河至银川</h3>
+      <p>任山河战斗打开解放宁夏南大门，十九兵团乘胜进军；1949年9月23日银川解放，塞上大地迎来新生。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 英烈长廊 ============ -->
+<section class="section martyrs" id="martyrs">
+  <div class="sec-head reveal">
+    <div class="sec-num">贰</div>
+    <div class="sec-headtext"><h2>英烈长廊 · 塞上忠魂</h2><p>HALL OF MARTYRS</p></div>
+    <div class="head-line"></div>
+  </div>
+  <p class="intro-lead reveal" style="margin-bottom:46px">点击每一位英烈的展牌，可查阅其事迹，并由 <b>AI 讲解员</b>朗读他们的故事。</p>
+  <div class="martyr-wall" id="martyrWall"></div>
+  <p class="m-note reveal">注：本长廊陈列<b>八位烈士</b>与<b>一位革命先驱（张子华，1942年积劳成疾，病逝于延安）</b>。为尊重英烈，本画廊不以人工智能生成烈士肖像，统一以青松丰碑之象铭记。</p>
+</section>
+
+<!-- ============ 峥嵘岁月 ============ -->
+<section class="section timeline-sec" id="timeline">
+  <div class="sec-head reveal">
+    <div class="sec-num">叁</div>
+    <div class="sec-headtext"><h2>峥嵘岁月 · 塞上大事</h2><p>TIMELINE 1935—2024</p></div>
+    <div class="head-line"></div>
+  </div>
+  <div class="tl" id="timelineBox"></div>
+</section>
+
+<!-- ============ 红色经典 · 诗词铸魂 ============ -->
+<section class="section classic-sec" id="classic">
+  <div class="sec-head reveal">
+    <div class="sec-num">肆</div>
+    <div class="sec-headtext"><h2>红色经典 · 诗词铸魂</h2><p>POEM OF LIUPAN MOUNTAIN</p></div>
+    <div class="head-line"></div>
+  </div>
+  <p class="intro-lead reveal" style="margin-bottom:40px">一首词，给了宁夏最响亮的精神注脚，也给了本画廊贯穿始终的母题——<b>长城垛口纹</b>。</p>
+  <div class="poem-wrap reveal">
+    <div class="poem-scroll">
+      <div class="poem-title">清平乐 · 六盘山</div>
+      <div class="poem-body">
+        <p>天高云淡，望断南飞雁。</p>
+        <p>不到长城非好汉，屈指行程二万。</p>
+        <p class="stanza">六盘山上高峰，红旗漫卷西风。</p>
+        <p>今日长缨在手，何时缚住苍龙？</p>
+      </div>
+      <div class="poem-sign">—— 毛泽东 · 一九三五年十月吟于六盘山（初稿名《长征谣》）</div>
+    </div>
+    <div class="poem-notes">
+      <h4>词牌背后的长征</h4>
+      <p>1935年10月7日，中央红军在六盘山青石嘴遭遇敌军骑兵，<b>一战告捷</b>，缴获大量战马、弹药与物资，打开了通往陕北革命根据地的最后屏障。毛泽东登上六盘山巅，回望万水千山、展望革命前途，吟出这首词的初稿——<b>《长征谣》</b>。</p>
+      <p>词稿几经修改，1957年1月在《诗刊》创刊号以《清平乐·六盘山》为题公开发表；1961年9月，毛泽东应宁夏同志之嘱，在江西庐山召开中央工作会议期间亲笔手书这首词赠予宁夏。<b>“不到长城非好汉”</b>从此成为宁夏最鲜明的精神标识。</p>
+      <div class="poem-key">
+        <span>不到长城</span><i>坚定的革命信念</i>
+        <span>红旗漫卷</span><i>乐观的英雄气概</i>
+        <span>长缨在手</span><i>历史的主动精神</i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 红色地图 ============ -->
+<section class="section atlas" id="atlas">
+  <div class="sec-head reveal">
+    <div class="sec-num">伍</div>
+    <div class="sec-headtext"><h2>红色地图 · 塞上地标</h2><p>RED ATLAS OF NINGXIA</p></div>
+    <div class="head-line"></div>
+  </div>
+  <div class="atlas-grid">
+    <div class="map-box reveal">
+      <svg viewBox="0 0 400 520" role="img" aria-label="宁夏红色地标示意图">
+        <path class="river" d="M112,250 C138,228 158,214 176,186 C190,160 196,140 196,118 C196,92 198,74 200,52"/>
+        <text class="map-label" x="120" y="188" fill="#5e8a9e">黄 河</text>
+        <path class="nx-outline" d="M200,24 L222,44 L214,78 L234,100 L218,128 L246,142 L296,148 L332,158 L338,180 L316,198 L280,196 L250,206 L226,228 L214,266 L220,308 L234,344 L224,378 L234,402 L208,420 L200,446 L184,472 L160,492 L138,478 L120,454 L102,432 L90,406 L82,378 L96,348 L84,320 L74,296 L86,266 L94,236 L104,208 L120,184 L142,164 L160,140 L176,112 L174,80 L184,48 Z"/>
+        <!-- 普通城市 -->
+        <g opacity=".6"><circle cx="200" cy="58" r="4" fill="#8a7b66"/><text class="map-label" x="214" y="66" font-size="12">石嘴山</text></g>
+        <g opacity=".6"><circle cx="108" cy="240" r="4" fill="#8a7b66"/><text class="map-label" x="50" y="244" font-size="12">中卫</text></g>
+        <g opacity=".6"><circle cx="196" cy="172" r="4" fill="#8a7b66"/><text class="map-label" x="150" y="166" font-size="12">吴忠</text></g>
+        <g opacity=".6"><circle cx="156" cy="410" r="4" fill="#8a7b66"/><text class="map-label" x="166" y="406" font-size="12">固原</text></g>
+        <g class="map-point active" data-site="0"><circle class="halo" cx="196" cy="116" r="8"/><circle class="core" cx="196" cy="116" r="7"/><text x="128" y="113">银川</text></g>
+        <g class="map-point" data-site="1"><circle class="halo" cx="300" cy="170" r="8"/><circle class="core" cx="300" cy="170" r="7"/><text x="310" y="166">盐池</text></g>
+        <g class="map-point" data-site="2"><circle class="halo" cx="210" cy="400" r="8"/><circle class="core" cx="210" cy="400" r="7"/><text x="222" y="397">任山河</text></g>
+        <g class="map-point" data-site="3"><circle class="halo" cx="100" cy="420" r="8"/><circle class="core" cx="100" cy="420" r="7"/><text x="10" y="416">将台堡</text></g>
+        <g class="map-point" data-site="4"><circle class="halo" cx="150" cy="458" r="8"/><circle class="core" cx="150" cy="458" r="7"/><text x="164" y="462">六盘山</text></g>
+      </svg>
+      <div class="map-legend">
+        <span><i style="background:#c1272d"></i>红色地标（点击查看）</span>
+        <span><i style="background:#8a7b66"></i>城市</span>
+        <span><i style="background:#5e8a9e"></i>黄河</span>
+      </div>
+    </div>
+    <div class="site-panel reveal">
+      <div class="site-img">
+        <span class="tag-aigc">AIGC 据史料创作</span>
+        <img id="siteImg" src="" alt="红色地标展品">
+      </div>
+      <div class="site-body">
+        <div class="site-date" id="siteDate"></div>
+        <h3 id="siteTitle"></h3>
+        <div class="place" id="sitePlace"></div>
+        <p id="siteDesc"></p>
+        <div class="site-actions">
+          <button class="speak-btn" id="siteSpeak">
+            <svg class="icon-sound" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"/></svg>
+            <span class="bars"><i></i><i></i><i></i><i></i></span>
+            <span class="speak-label">AI 讲解员朗读</span>
+          </button>
+        </div>
+        <div class="site-dots" id="siteChips"></div>
+      </div>
+    </div>
+  </div>
+  <p class="atlas-note">地图为红色地标示意图（非精确地理比例）· 展出画面均为人工智能依据公开史料创作的数字艺术作品，非真实历史影像</p>
+</section>
+
+<!-- ============ 回汉同心 ============ -->
+<section class="section unity-sec" id="unity">
+  <div class="sec-head reveal">
+    <div class="sec-num">陆</div>
+    <div class="sec-headtext"><h2>回汉同心 · 民族自治先声</h2><p>ETHNIC UNITY IN NINGXIA</p></div>
+    <div class="head-line"></div>
+  </div>
+  <p class="intro-lead reveal" style="margin-bottom:42px">宁夏是回汉各族人民共同的家园。红军在宁夏大地上的<b>民族政策实践</b>，是党的民族区域自治制度的伟大先声，至今仍在延续。</p>
+  <div class="unity-grid">
+    <div class="unity-card reveal">
+      <div class="uc-year">1935 · 8</div>
+      <h3>“回汉兄弟亲如一家”</h3>
+      <p>红二十五军长征进入西吉单家集，部队严格执行民族纪律：不进清真寺、不食猪肉、不借回族群众的炊具。军首长向陕义堂清真寺赠送锦幛，<b>“回汉兄弟亲如一家”</b>八个字被回族群众传为佳话。</p>
+    </div>
+    <div class="unity-card reveal">
+      <div class="uc-year">1935 · 10 · 5</div>
+      <h3>单家集夜话</h3>
+      <p>毛泽东夜宿单家集，在清真寺土炕上盘腿而坐，与阿訇马德海一边喝盖碗茶一边促膝长谈：讲北上抗日的主张，听回族的宗教与风俗。一夜长谈，让回族群众第一次真正认识了共产党和红军。</p>
+    </div>
+    <div class="unity-card reveal highlight">
+      <div class="uc-year">1936 · 10 · 20</div>
+      <h3>第一个县级回族自治政权</h3>
+      <p>陕甘宁省豫海县回民自治政府在<b>同心清真大寺</b>召开成立大会，马和福当选主席。它第一次把民族平等、民族自治的主张写进了人民政权建设的实践，是民族区域自治制度的重要源头。11月12日，红军三大主力会聚同心，自治政府召开军民联欢大会，朱德、彭德怀、贺龙等出席，马和福代表回汉群众致欢迎词。</p>
+    </div>
+  </div>
+  <div class="unity-quote reveal">
+    <svg class="uq-mark" viewBox="0 0 24 24" width="30" height="30" fill="#c9a24b"><path d="M10 7H6a3 3 0 0 0-3 3v7h7v-7H6.5A3.5 3.5 0 0 1 10 6.5zm11 0h-4a3 3 0 0 0-3 3v7h7v-7h-3.5A3.5 3.5 0 0 1 21 6.5z"/></svg>
+    <p>豫海县回民自治政府虽只存在了半年，但它证明了一件事：<b>民族平等、团结自治，不是口号，而是可以被建立起来的生活。</b></p>
+  </div>
+</section>
+
+<!-- ============ 3D虚拟展厅（沉浸式） ============ -->
+<section class="section hall-sec" id="hall3d">
+  <div class="sec-head reveal">
+    <div class="sec-num">柒</div>
+    <div class="sec-headtext"><h2>云上展厅 · 3D漫游</h2><p>WEBGL VIRTUAL GALLERY</p></div>
+    <div class="head-line"></div>
+  </div>
+  <p class="intro-lead reveal" style="margin-bottom:30px">基于 WebGL 的<b>沉浸式红色展厅</b>：十五幅 AIGC 套色版画沿红毯两侧依次陈列，拖动鼠标环视四周，点击画作即可移步聚焦并聆听讲解，巡游尽头是“革命烈士永垂不朽”巨幅壁画。</p>
+  <div class="hall3d reveal">
+    <div id="threeWrap"></div>
+    <div class="hall-loading" id="hallLoading">
+      <svg class="big-star" viewBox="0 0 100 100"><polygon points="50,12 61,38 88,38 66,55 74,82 50,66 26,82 34,55 12,38 39,38" fill="#c9a24b"/></svg>
+      <div class="lt">正在布置展厅</div>
+      <div class="loadbar"><i id="loadFill"></i></div>
+      <div class="load-pct" id="loadPct">0%</div>
+      <div class="ls" id="loadTip">正在加载展品图片…</div>
+    </div>
+    <div class="hall-hint" id="hallHint">
+      <span><b>拖动</b>环视四周</span><span>·</span><span><b>点击画作</b>移步讲解</span><span>·</span><span><b>滚轮</b>微调远近</span>
+    </div>
+    <div class="hall-ctrl">
+      <button id="tourPause">暂停巡游</button>
+      <button id="tourReset">从头参观</button>
+    </div>
+    <div class="art-info" id="artInfo">
+      <button class="close" id="artClose" aria-label="关闭">×</button>
+      <div class="art-date" id="artDate"></div>
+      <div class="art-title" id="artTitle"></div>
+      <div class="art-desc" id="artDesc"></div>
+      <div class="art-actions">
+        <button class="btn-speak" id="artSpeak">AI 讲解</button>
+        <button class="btn-back" id="artResume">继续参观</button>
+      </div>
+    </div>
+    <div class="tour-end" id="tourEnd">
+      <div class="te-inner">
+        <svg viewBox="0 0 100 100"><polygon points="50,12 61,38 88,38 66,55 74,82 50,66 26,82 34,55 12,38 39,38" fill="#c9a24b"/></svg>
+        <div class="te-title">本次参观已到终点</div>
+        <div class="te-sub">塞上忠魂 · 精神永续</div>
+        <button id="tourEndReset">从头参观</button>
+      </div>
+    </div>
+  </div>
+  <div class="fallback-wall" id="fallbackWall">
+    <h2>塞上忠魂 · 展品长廊</h2>
+    <div class="fs">您的浏览器未开启 WebGL，已为您切换为平面展厅</div>
+    <div class="fb-grid" id="fbGrid"></div>
+  </div>
+  <div class="hall-list" id="catalog">
+    <div class="cl-head"><span class="cl-seal">目</span><h3>展厅展品清单</h3></div>
+    <p class="cl-en" id="catalogEn">CATALOG</p>
+    <div class="list-grid" id="listGrid"></div>
+  </div>
+  <p class="atlas-note">展厅为实时渲染的 WebGL 场景，展陈画面与本画廊 AIGC 展品同源；低性能设备会自动降级为平面展厅，展品讲解采用预录真人语音并以自然语音合成兜底</p>
+</section>
+
+<!-- ============ 红色场馆 ============ -->
+<section class="section venues-sec" id="venues">
+  <div class="sec-head reveal">
+    <div class="sec-num">捌</div>
+    <div class="sec-headtext"><h2>红色场馆 · 今日打卡</h2><p>RED MEMORIALS ACROSS NINGXIA</p></div>
+    <div class="head-line"></div>
+  </div>
+  <p class="intro-lead reveal" style="margin-bottom:42px">数字画廊之外，六座纪念馆（园）矗立在塞上大地，是可踏访、可致敬的<b>精神坐标</b>。点击“一键导航”，即可在地图中打开前往。</p>
+  <div class="venue-grid">
+    <div class="venue-card reveal">
+      <div class="vc-badge">胜利之山</div>
+      <h3>六盘山红军长征纪念馆</h3>
+      <div class="vc-place">固原市隆德县 · 六盘山</div>
+      <p>长征国家文化公园核心区之一，沿 2.5 公里“红军小道”登峰，18 组雕塑再现长征重大场景；山巅纪念碑下，“不到长城非好汉”的词墙最为震撼。</p>
+      <div class="vc-addr"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>固原市隆德县城关镇杨家店村<br>六盘山红军长征旅游区内（312国道沿线，距县城约6公里）</span></div>
+      <div class="vc-meta">国家5A级旅游景区 · 电话 0954-6516800</div>
+      <a class="vc-map" href="https://uri.amap.com/marker?position=106.206978,35.668091&name=%E5%85%AD%E7%9B%98%E5%B1%B1%E7%BA%A2%E5%86%9B%E9%95%BF%E5%BE%81%E7%BA%AA%E5%BF%B5%E9%A6%86&coordinate=gaode&callnative=1&src=saishangzhonghun" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>一键导航</a>
+    </div>
+    <div class="venue-card reveal">
+      <div class="vc-badge">会师之地</div>
+      <h3>将台堡红军长征会师纪念园</h3>
+      <div class="vc-place">固原市西吉县 · 将台堡</div>
+      <p>1936年10月22日红一、二方面军在此胜利会师，这是红军长征最后一次会师，标志着二万五千里长征胜利结束。会师纪念碑、会师广场与红军寨，是“行走的思政课”热门研学地。</p>
+      <div class="vc-addr"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>固原市西吉县将台堡镇固将路<br>葫芦河与马莲川河交汇处（县城以南约30公里）</span></div>
+      <div class="vc-meta">全国重点文物保护单位 · 电话 0954-3026696</div>
+      <a class="vc-map" href="https://uri.amap.com/marker?position=105.840490,35.817966&name=%E5%B0%86%E5%8F%B0%E5%A0%A1%E7%BA%A2%E5%86%9B%E4%BC%9A%E5%B8%88%E7%BA%AA%E5%BF%B5%E5%9B%AD&coordinate=gaode&callnative=1&src=saishangzhonghun" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>一键导航</a>
+    </div>
+    <div class="venue-card reveal">
+      <div class="vc-badge">自治先声</div>
+      <h3>同心红军西征纪念园</h3>
+      <div class="vc-place">吴忠市同心县 · 豫海镇</div>
+      <p>国内唯一以红军西征为主题的纪念场所，依托豫海县回民自治政府成立大会旧址而建，投影与电动沙盘再现西征红军进入同心全过程，系统展示西征战役与民族自治实践。</p>
+      <div class="vc-addr"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>吴忠市同心县豫海镇大寺路100号<br>县城南郊（福银高速同心出口约2公里）</span></div>
+      <div class="vc-meta">国家4A级景区 · 免费开放 · 09:30–17:30</div>
+      <a class="vc-map" href="https://uri.amap.com/marker?position=105.916564,36.963236&name=%E5%90%8C%E5%BF%83%E7%BA%A2%E5%86%9B%E8%A5%BF%E5%BE%81%E7%BA%AA%E5%BF%B5%E5%9B%AD&coordinate=gaode&callnative=1&src=saishangzhonghun" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>一键导航</a>
+    </div>
+    <div class="venue-card reveal">
+      <div class="vc-badge">老区丰碑</div>
+      <h3>盐池县革命烈士纪念园</h3>
+      <div class="vc-place">吴忠市盐池县 · 盐林南路</div>
+      <p>全国100个红色旅游经典景区之一，含革命烈士纪念馆、苏维埃纪念馆、毛泽民纪念馆；占地约400亩，铭记老区13年红旗不倒。1938—1943年，从盐池运出的食盐达12.5亿公斤。</p>
+      <div class="vc-addr"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>吴忠市盐池县盐林南路249号<br>县城南花马寺国家森林公园内（距县城约1.3公里）</span></div>
+      <div class="vc-meta">国家3A级景区 · 免费开放 · 09:00–17:00</div>
+      <a class="vc-map" href="https://uri.amap.com/marker?position=107.378241,37.769816&name=%E7%9B%90%E6%B1%A0%E5%8E%BF%E9%9D%A9%E5%91%BD%E7%83%88%E5%A3%AB%E7%BA%AA%E5%BF%B5%E5%9B%AD&coordinate=gaode&callnative=1&src=saishangzhonghun" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>一键导航</a>
+    </div>
+    <div class="venue-card reveal">
+      <div class="vc-badge">旧址新生</div>
+      <h3>景岳小学 · 三烈士纪念碑</h3>
+      <div class="vc-place">银川市兴庆区 · 回春巷</div>
+      <p>崔景岳、马文良、孟长有三烈士就义旧址所在。1991年建碑，原第十三小学更名景岳小学；碑前“传承”雕塑形似火炬，石墙镌刻“1941.4.17”，被一代代少先队员守护。</p>
+      <div class="vc-addr"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>银川市兴庆区回春巷73号<br>景岳小学院内（湖滨街商圈）</span></div>
+      <div class="vc-meta">全国爱国主义教育基地 · 电话 0951-6720129</div>
+      <a class="vc-map" href="https://uri.amap.com/marker?position=106.283907,38.472887&name=%E6%99%AF%E5%B2%B3%E5%B0%8F%E5%AD%A6%E4%B8%89%E7%83%88%E5%A3%AB%E7%BA%AA%E5%BF%B5%E7%A2%91&coordinate=gaode&callnative=1&src=saishangzhonghun" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>一键导航</a>
+    </div>
+    <div class="venue-card reveal">
+      <div class="vc-badge">国家级陵园</div>
+      <h3>任山河烈士陵园</h3>
+      <div class="vc-place">固原市彭阳县 · 古城镇</div>
+      <p>1955年为纪念任山河战斗中牺牲的364名指战员而建，今有396名烈士长眠于此，陵园占地4万平方米。宁夏现有银川、贺兰山、同心、吴忠涝河桥、任山河5处国家级烈士纪念设施。</p>
+      <div class="vc-addr"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>固原市彭阳县古城镇任河村<br>彭阳县城西北约18公里，与六盘山隔山相望</span></div>
+      <div class="vc-meta">全国重点烈士纪念建筑物保护单位 · 08:30–17:30</div>
+      <a class="vc-map" href="https://uri.amap.com/marker?position=106.435160,35.868189&name=%E4%BB%BB%E5%B1%B1%E6%B2%B3%E7%83%88%E5%A3%AB%E9%99%B5%E5%9B%AD&coordinate=gaode&callnative=1&src=saishangzhonghun" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>一键导航</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 云祭厅 ============ -->
+<section class="memorial" id="memorial">
+  <div class="mem-hero reveal">
+    <img src="assets/media/02-3xFnCe.jpg" alt="塞上青年缅怀先烈">
+    <div class="mem-hero-text">
+      <h2>尾厅 · 精神永传</h2>
+      <p>从1935到今天，红旗漫卷过的土地上，新生的塞上早已山河锦绣。英烈未竟的事业，正由一代代青年接续前行。</p>
+    </div>
+  </div>
+  <div class="mem-grid">
+    <div class="tribute reveal">
+      <h3>云端献花</h3>
+      <p>轻触鲜花，为宁夏革命烈士献上一瓣心香</p>
+      <button class="flower-btn" id="flowerBtn" aria-label="献花">
+        <svg viewBox="0 0 48 48"><g fill="#f4ecdd"><circle cx="24" cy="14" r="8"/><circle cx="34" cy="24" r="8"/><circle cx="24" cy="34" r="8"/><circle cx="14" cy="24" r="8"/></g><circle cx="24" cy="24" r="6" fill="#c9a24b"/></svg>
+        <span>献 花</span>
+      </button>
+      <div class="flower-count">本设备已献花 <b id="flowerCount">0</b> 朵</div>
+      <button class="poster-btn" id="posterBtn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        生成我的纪念海报
+      </button>
+    </div>
+    <div class="msg-board reveal">
+      <h3>青春寄语</h3>
+      <div class="msg-form">
+        <input id="msgName" placeholder="你的名字" maxlength="12" aria-label="名字">
+        <textarea id="msgText" placeholder="写下你想对英烈说的话……（120字以内）" maxlength="120" aria-label="寄语内容"></textarea>
+        <button id="msgSubmit">寄 语</button>
+      </div>
+      <div class="msg-list" id="msgList"></div>
+    </div>
+  </div>
+  <div class="oath reveal">
+    <div class="seal-big">传承<br>有我</div>
+    <p>山河无恙，吾辈自强。<br>我们将以烈士之忠勇为灯，以“不到长城非好汉”的精神为炬，<br>在新时代的长征路上，续写塞上青年的忠诚与担当。</p>
+    <div class="sig">—— 塞上青年</div>
+  </div>
+</section>
+
+<!-- ============ 页脚 ============ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <h4>史料来源（均为公开权威资料）</h4>
+    <div class="src-list">
+      <a href="http://dsyjs.yinchuan.gov.cn/rwyj/201706/t20170615_262054.htm" target="_blank" rel="noopener">中共银川市委党史研究室 · 崔景岳传</a>
+      <a href="http://dsyjs.yinchuan.gov.cn/dsyj/dstd/202003/t20200309_1983900.htm" target="_blank" rel="noopener">中共银川市委党史研究室 · 三烈士英勇就义旧址（景岳小学）</a>
+      <a href="http://dsyjs.yinchuan.gov.cn/skyd/zgycds/fl_2346/201408/t20140827_60922.htm" target="_blank" rel="noopener">中共银川市委党史研究室 · 党史人物马文良</a>
+      <a href="https://www.dswxyjy.org.cn/n1/2024/1030/c244516-40350348.html" target="_blank" rel="noopener">中央党史和文献研究院 · 中国工农红军长征、西征在宁夏</a>
+      <a href="http://politics.people.com.cn/n1/2019/0812/c1001-31288612.html" target="_blank" rel="noopener">人民网 · 将台堡：红军长征胜利的见证</a>
+      <a href="http://www.nxdsw.net/yjyjzlk/gys/202307/t20230718_750286.html" target="_blank" rel="noopener">宁夏党史学习教育网 · 任山河烈士陵园</a>
+      <a href="http://cpc.people.com.cn/n1/2023/0730/c443712-40046577.html" target="_blank" rel="noopener">中国共产党新闻网 · 黎明前的较量（任山河与宁夏解放）</a>
+      <a href="http://nx.people.com.cn/n2/2021/0406/c192482-34659589.html" target="_blank" rel="noopener">人民网 · 一门两烈士 忠魂永传承（孙寿名）</a>
+      <a href="https://gfjy.nxnews.net/shgc/202103/t20210318_4865208.html" target="_blank" rel="noopener">宁夏国防教育网 · 碧血丹心贺兰魂（任天才）</a>
+      <a href="https://www.xinhuanet.com/photo/2021-06/18/c_1127575690.htm" target="_blank" rel="noopener">新华网 · 毛泽民与盐池的红色故事</a>
+      <a href="https://www.nxda.org.cn/nxdafw_new/upload/file/2022/08/25/f50d0ac1284742639badf525d88154f1.pdf" target="_blank" rel="noopener">宁夏回族自治区档案馆 · 档案博览（任山河烈士陵园）</a>
+      <a href="http://nxdsw.net/hsly/201807/t20180731_3146.html" target="_blank" rel="noopener">宁夏党史学习教育网 · 石嘴山市红色景点介绍</a>
+      <a href="http://www.nxdsw.net/zt/jyzl/nxdsrw/202102/t20210225_278542.html" target="_blank" rel="noopener">宁夏党史学习教育网 · 马和福：豫海县回民自治政府主席</a>
+      <a href="https://www.dswxyjy.org.cn/BIG5/n/2013/1030/c222137-23378838.html" target="_blank" rel="noopener">中央党史和文献研究院 · 豫海县回民自治政府成立大会旧址</a>
+      <a href="http://dsyjs.yinchuan.gov.cn/rwyj/201602/t20160217_110399.htm" target="_blank" rel="noopener">中共银川市委党史研究室 · 李天才</a>
+      <a href="http://dsyjs.yinchuan.gov.cn/rwyj/201802/t20180227_695697.htm" target="_blank" rel="noopener">中共银川市委党史研究室 · 王克和</a>
+      <a href="https://www.neac.gov.cn/seac/c103391/202308/1166921.shtml" target="_blank" rel="noopener">国家民族事务委员会 · 单家集夜话：民族团结的红色佳话</a>
+      <a href="https://whhlyt.nx.gov.cn/jqjd/wzs_66582/ycgmlsjny/" target="_blank" rel="noopener">宁夏回族自治区文化和旅游厅 · 盐池革命烈士纪念园</a>
+      <a href="https://whhlyt.nx.gov.cn/jqjd/wzs_66582/txhjxzjny/" target="_blank" rel="noopener">宁夏回族自治区文化和旅游厅 · 同心红军西征纪念园</a>
+      <a href="http://www.nxld.gov.cn/zjld/whly/lyjd/202502/t20250213_4822202.html" target="_blank" rel="noopener">隆德县人民政府 · 六盘山红军长征旅游景区（5A）</a>
+      <a href="https://www.nxxj.gov.cn/xwzx/mtjj/201808/t20180819_980032.html" target="_blank" rel="noopener">西吉县人民政府 · 将台堡红军长征会师纪念园</a>
+      <a href="https://www.pengyang.gov.cn/xxgk_13872/zfxxgkml/ghjh/sjgg_68286/202510/W0202510245554027135845.pdf" target="_blank" rel="noopener">彭阳县人民政府 · 任山河烈士陵园（396名烈士长眠）</a>
+      <a href="http://dsyjs.yinchuan.gov.cn/dsyj/dstd/202003/t20200309_1983900.htm" target="_blank" rel="noopener">中共银川市委党史研究室 · 三烈士英勇就义旧址（景岳小学）</a>
+    </div>
+    <div class="footer-note">
+      作品说明：本网站为大学生数字创意作品演示原型。全部展陈画面由 AIGC 依据公开史料创作，为艺术化数字作品，不代表真实历史影像；AI 讲解员语音由浏览器语音合成（Web Speech API）实时生成；云端献花、青春寄语数据仅保存在参观者本机浏览器，不上传任何服务器。如涉史实表述，以官方权威发布为准。
+    </div>
+    <div class="footer-copy">塞上忠魂 · 宁夏革命烈士精神数字画廊 ｜ 红色之旅 · 追梦铸魂 ｜ 科技+创意，讲好中国故事</div>
+  </div>
+</footer>
+
+<!-- ============ 烈士详情弹窗 ============ -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="烈士事迹">
+  <div class="modal-mask" data-close></div>
+  <div class="modal-panel">
+    <button class="modal-close" data-close aria-label="关闭"><svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    <div class="modal-banner"><img id="mBanner" src="assets/media/03-qAKnUd.jpg" alt="银川长夜"></div>
+    <div class="modal-body">
+      <div class="modal-title" id="mTitle"></div>
+      <div class="modal-meta" id="mMeta"></div>
+      <button class="speak-btn" id="mSpeak">
+        <svg class="icon-sound" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"/></svg>
+        <span class="bars"><i></i><i></i><i></i><i></i></span>
+        <span class="speak-label">AI 讲解员朗读事迹</span>
+      </button>
+      <div class="modal-text" id="mText"></div>
+      <div class="modal-src" id="mSrc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 站点展品图预加载（供地图面板切换，保持静态引用） -->
+<div id="siteImgPool" hidden aria-hidden="true">
+  <img data-img="0" src="assets/media/03-qAKnUd.jpg" alt="">
+  <img data-img="1" src="assets/media/04-lqnn9c.jpg" alt="">
+  <img data-img="2" src="assets/media/05-tzKndh.jpg" alt="">
+  <img data-img="3" src="assets/media/06-7swnue.jpg" alt="">
+  <img data-img="4" src="assets/media/07-I55ngb.jpg" alt="">
+</div>
+
+<!-- 3D展厅素材池：16幅展品图 + 16条真人讲解音频（静态引用，点击时才加载音频） -->
+<div class="asset-pool" aria-hidden="true">
+  <img crossorigin="anonymous" id="img-xiezichang" src="assets/media/08-hIanrh.jpg" alt="">
+  <img crossorigin="anonymous" id="img-hong25" src="assets/media/09-Q6Infg.jpg" alt="">
+  <img crossorigin="anonymous" id="img-liupanshan" src="assets/media/07-I55ngb.jpg" alt="">
+  <img crossorigin="anonymous" id="img-qingshizui" src="assets/media/10-FJInUb.jpg" alt="">
+  <img crossorigin="anonymous" id="img-yanchi" src="assets/media/04-lqnn9c.jpg" alt="">
+  <img crossorigin="anonymous" id="img-xiaohao" src="assets/media/11-9konZv.jpg" alt="">
+  <img crossorigin="anonymous" id="img-yuhui" src="assets/media/12-pm5nDh.jpg" alt="">
+  <img crossorigin="anonymous" id="img-jiangtaibu" src="assets/media/06-7swnue.jpg" alt="">
+  <img crossorigin="anonymous" id="img-mahefu" src="assets/media/13-bvRn2a.jpg" alt="">
+  <img crossorigin="anonymous" id="img-yinchuan" src="assets/media/03-qAKnUd.jpg" alt="">
+  <img crossorigin="anonymous" id="img-renshanhe" src="assets/media/05-tzKndh.jpg" alt="">
+  <img crossorigin="anonymous" id="img-hero" src="assets/media/01-dwynsb.jpg" alt="">
+  <img crossorigin="anonymous" id="img-yinchuan1949" src="assets/media/14-IZVnLh.jpg" alt="">
+  <img crossorigin="anonymous" id="img-cuijingyue2" src="assets/media/15-imanEe.jpg" alt="">
+  <img crossorigin="anonymous" id="img-helan" src="assets/media/16-8gVnff.jpg" alt="">
+  <img crossorigin="anonymous" id="img-heritage" src="assets/media/02-3xFnCe.jpg" alt="">
+  <audio id="audio-xiezichang" src="assets/media/17-M3Ondd.mp3" preload="none"></audio>
+  <audio id="audio-hong25" src="assets/media/18-efnn9b.mp3" preload="none"></audio>
+  <audio id="audio-poem" src="assets/media/19-X5Bn8g.mp3" preload="none"></audio>
+  <audio id="audio-qingshizui" src="assets/media/20-XDgnNe.mp3" preload="none"></audio>
+  <audio id="audio-yanchi" src="assets/media/21-SMCnee.mp3" preload="none"></audio>
+  <audio id="audio-xiaohao" src="assets/media/22-qt4nhg.mp3" preload="none"></audio>
+  <audio id="audio-yuhui" src="assets/media/23-PP3nLd.mp3" preload="none"></audio>
+  <audio id="audio-jiangtaibu" src="assets/media/24-TivnAe.mp3" preload="none"></audio>
+  <audio id="audio-mahefu" src="assets/media/25-MuonId.mp3" preload="none"></audio>
+  <audio id="audio-cuijingyue" src="assets/media/26-SBsnoe.mp3" preload="none"></audio>
+  <audio id="audio-renshanhe" src="assets/media/27-G6sn8d.mp3" preload="none"></audio>
+  <audio id="audio-hero" src="assets/media/28-q4hnKd.mp3" preload="none"></audio>
+  <audio id="audio-yinchuan1949" src="assets/media/29-Zo6nme.mp3" preload="none"></audio>
+  <audio id="audio-cuijingyue2" src="assets/media/30-41ZnYg.mp3" preload="none"></audio>
+  <audio id="audio-helan" src="assets/media/31-Sm1n9b.mp3" preload="none"></audio>
+  <audio id="audio-oath" src="assets/media/32-vLdnHg.mp3" preload="none"></audio>
+  <audio id="voice-cuijingyue" src="assets/voices/cuijingyue.mp3" preload="none"></audio>
+  <audio id="voice-mawenliang" src="assets/voices/mawenliang.mp3" preload="none"></audio>
+  <audio id="voice-mengchangyou" src="assets/voices/mengchangyou.mp3" preload="none"></audio>
+  <audio id="voice-sunshouming" src="assets/voices/sunshouming.mp3" preload="none"></audio>
+  <audio id="voice-rentiancai" src="assets/voices/rentiancai.mp3" preload="none"></audio>
+  <audio id="voice-mahefu" src="assets/voices/mahefu.mp3" preload="none"></audio>
+  <audio id="voice-litiancai" src="assets/voices/litiancai.mp3" preload="none"></audio>
+  <audio id="voice-wangkehe" src="assets/voices/wangkehe.mp3" preload="none"></audio>
+  <audio id="voice-zhangzihua" src="assets/voices/zhangzihua.mp3" preload="none"></audio>
+</div>
+
+<!-- three.js 改为滚动到展厅时异步懒加载，避免 CDN 慢时阻塞整页交互 -->
+<script>
+/* ================= 数据 ================= */
+const PINE_SVG='<svg class="pine" viewBox="0 0 88 88" fill="none" aria-hidden="true"><path d="M44 12l2.1 4.6 5 .5-3.8 3.3 1.2 4.9L44 22.7l-4.5 2.6 1.2-4.9-3.8-3.3 5-.5z" fill="#c9a24b"/><rect x="39" y="28" width="10" height="36" fill="#c9a24b" opacity=".85"/><rect x="28" y="64" width="32" height="4" fill="#c9a24b" opacity=".6"/><rect x="21" y="69" width="46" height="5" fill="#c9a24b" opacity=".45"/><path d="M30 58c-8 2-13 7-16 14 7 0 14-2 18-7" stroke="#c9a24b" stroke-width="2" opacity=".5"/><path d="M58 58c8 2 13 7 16 14-7 0-14-2-18-7" stroke="#c9a24b" stroke-width="2" opacity=".5"/></svg>';
+const STAR_SVG='<svg class="star5" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.5 5.9 6.3.6-4.8 4.2 1.4 6.2L12 15.8l-5.4 3.1 1.4-6.2L3.2 8.5l6.3-.6z" fill="#c1272d"/></svg>';
+const ARROW_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+const MARTYRS=[
+ {name:'崔景岳',audio:'cuijingyue',years:'1911 — 1941',home:'陕西旬邑',role:'中共宁夏工委书记',seal:'忠',
+  quote:'人活百岁，总有一死；死得其值，塞上千秋。',
+  speech:'崔景岳，一九一一年生于陕西旬邑，一九二七年加入中国共产党。一九三九年冬，他临危受命，担任中共宁夏工委书记，短短三个月就在银川、银南、银北重建六个党支部，发展二十六名党员。一九四〇年四月，因叛徒出卖，包括他在内的三十四人先后被捕（其中党员十六人）。狱中，他面对严刑拷打坚贞不屈，秘密组建地下党支部，领导难友坚持斗争。一九四一年四月十七日深夜，崔景岳被国民党反动派活埋于银川城隍庙后，年仅三十岁。他是民主革命时期在宁夏牺牲的职务最高的共产党人，临刑前留下了“我今天的死，虽不得其时、其地、其所，但却死得其值”的慷慨遗言。',
+  sections:[
+   ['临危受命 · 塞上建党','崔景岳，原名崔廷儒，1911年11月出生于陕西省旬邑县一个贫苦农民家庭。1926年参加革命，1927年加入中国共产党，曾参加旬邑起义，后任中共陕西省委委员兼省委秘书长。1939年冬，受党组织派遣来到宁夏，任中共宁夏工委书记；短短三个月，便在银川、银南、银北重建6个党支部、发展26名党员，推动抗日爱国运动。'],
+   ['狱中建党 · 坚贞不屈','1940年4月，因叛徒出卖，包括崔景岳在内的34人先后被捕（其中共产党员16人）。面对敌人的严刑拷打和威逼利诱，他始终不曾动摇，还在狱中秘密组建中共地下党支部，组织难友开展一系列对敌斗争。'],
+   ['慷慨就义 · 死得其值','1941年4月17日深夜，崔景岳被国民党反动派活埋于银川城隍庙后，壮烈牺牲，年仅30岁。临刑前，他对难友说：“人活百岁，总有一死。我今天的死，虽不得其时、其地、其所，但却死得其值。”他还怒斥敌人：“你们杀不完共产党人！也杀不完中国的老百姓！”']
+  ],
+  shout:'我今天的死，虽不得其时、其地、其所，但却死得其值。',
+  src:'中共银川市委党史研究室 · 崔景岳传；人民网 · “这是对崔景岳最好的纪念”；宁夏党史学习教育网'},
+ {name:'马文良',audio:'mawenliang',years:'1912 — 1941',home:'辽宁海城（回族）',role:'三边回民巡视团党组书记兼团长',seal:'烈',
+  quote:'回汉一家，跟党抗日；盐湖播火，忠魂映红。',
+  speech:'马文良，一九一二年生于辽宁海城，回族，时任三边回民巡视团党组书记兼团长。他奔走在盐池回汉聚居的村庄，宣传党的抗日主张，播撒革命火种。一九四一年二月，他在盐池县惠安堡回六庄开展工作时被捕。一九四一年四月十七日深夜，二十九岁的马文良与崔景岳、孟长有一起被国民党反动派活埋于银川城隍庙后，临刑前齐声高呼：中国共产党万岁！',
+  sections:[
+   ['回族青年 · 巡视三边','马文良，回族，1912年生于辽宁省海城县，时任三边回民巡视团党组书记兼团长。他奔走在回汉群众聚居的村庄，宣传党的抗日主张，播撒革命火种。'],
+   ['盐池被捕 · 坚贞不屈','1941年2月，他在盐池县惠安堡回六庄开展工作时被捕，身陷囹圄却始终坚贞不屈。'],
+   ['同殉信仰 · 慷慨就义','1941年4月17日深夜，年仅29岁的马文良与崔景岳、孟长有一同被活埋于银川城隍庙后。三位志士视死如归、大义凛然，齐声高呼革命口号。']
+  ],
+  shout:'中国共产党万岁！',
+  src:'中共银川市委党史研究室 · 新民主主义革命时期党史人物：马文良；宁夏回族自治区民委'},
+ {name:'孟长有',audio:'mengchangyou',years:'1916 — 1941',home:'宁夏中卫柔远乡',role:'宁夏工委地下工作者',seal:'魂',
+  quote:'从塞上到延安，从延安归塞上；一身师表，万古流芳。',
+  speech:'孟长有，一九一六年生于宁夏中卫县柔远乡。一九三七年，他奔赴延安，进入抗日军政大学学习，在革命熔炉中坚定了信仰。一九四〇年初，受党组织派遣回到宁夏，他在同心县喊叫水乡海如学校以教师身份作掩护，在课堂与乡间秘密开展革命工作。一九四一年四月十七日深夜，二十五岁的孟长有与崔景岳、马文良一同被国民党反动派活埋于银川城隍庙后，把生命永远留在了故乡的土地上。',
+  sections:[
+   ['中卫青年 · 求学延安','孟长有，1916年生于宁夏中卫县柔远乡。1937年，他奔赴延安，进入中国人民抗日军政大学学习，在革命熔炉中坚定了信仰。'],
+   ['回乡从教 · 秘密革命','1940年初，受党组织派遣回到宁夏，在同心县喊叫水乡海如学校以教师职业为掩护，在课堂与乡间秘密开展革命工作。'],
+   ['故土就义 · 青春无悔','后被国民党反动派逮捕。1941年4月17日深夜，年仅25岁的孟长有与崔景岳、马文良一同被活埋于银川城隍庙后，把生命永远留在了故乡的土地上。']
+  ],
+  shout:'中国共产党万岁！',
+  src:'中共银川市委党史研究室 · 三烈士英勇就义旧址（景岳小学）；中卫市纪委监委'},
+ {name:'孙寿名',audio:'sunshouming',years:'1917 — 1949',home:'宁夏固原',role:'革命志士',seal:'义',
+  quote:'黎明前远行，三十二载春秋；固原千里，兰州招魂。',
+  speech:'孙寿名，宁夏固原人，青年时代就投身西北民主革命事业。一九四九年八月，第一野战军进军兰州，国民党特务疯狂屠杀革命志士。八月二十一日夜，孙寿名在兰州壮烈牺牲，年仅三十二岁，倒在新中国成立的黎明之前。一九四九年十二月二十五日，固原县各界为他举行追悼大会，烈士忠骨后来安葬于兰州烈士陵园。',
+  sections:[
+   ['固原子弟 · 投身革命','孙寿名，宁夏固原人，青年时代即投身西北民主革命事业，为人民解放奔走呼号。'],
+   ['黎明之前 · 血洒兰州','1949年8月，第一野战军进军兰州，国民党特务疯狂屠杀革命志士。8月21日夜，孙寿名在兰州壮烈牺牲，年仅32岁，倒在新中国成立的黎明之前。'],
+   ['一门忠烈 · 魂归陵园','1949年12月25日，固原县各界为孙寿名举行追悼大会；烈士忠骨后安葬于兰州烈士陵园。其家族“一门两烈士”的事迹在固原广为传颂。']
+  ],
+  shout:'',
+  src:'人民网 · 一门两烈士 忠魂永传承；为烈士寻亲'},
+ {name:'任天才',audio:'rentiancai',years:'— 1947',home:'宁夏籍',role:'回汉支队战士',seal:'胆',
+  quote:'三段地边，铁骨铮铮；贺兰魂在，浩气长存。',
+  speech:'任天才，宁夏回汉支队战士。回汉支队是宁夏人民自己的革命武装。一九四七年，国民党军大举进犯三边地区，部队战略撤退时，党组织决定任天才留在三段地继续坚持地下工作。被捕后，他面对敌人惨无人道的严刑拷打，意志坚定、宁死不屈，始终没有暴露党组织。一九四七年九月，任天才壮烈牺牲。',
+  sections:[
+   ['回汉支队 · 塞上武装','任天才，宁夏回汉支队战士。回汉支队是宁夏人民自己的革命武装，在三边地区开展游击斗争，1949年还配合解放大军参加了解放宁夏的战斗。'],
+   ['奉命留守 · 坚持地下','1947年，国民党军大举进犯三边地区，回汉支队战略撤退时，党组织决定任天才留在三段地继续坚持地下工作。'],
+   ['酷刑不屈 · 壮烈牺牲','任天才被国民党特务逮捕后，面对惨无人道的严刑拷打和身心摧残，意志坚定、宁死不屈，始终没有暴露党组织。1947年9月，壮烈牺牲。']
+  ],
+  shout:'',
+  src:'宁夏国防教育网 · 碧血丹心贺兰魂；中共银川市委党史研究室 · 中共宁夏地下组织英勇悲壮的奋斗历程'},
+ {name:'马和福',audio:'mahefu',years:'1893 — 1937',home:'甘肃临夏（牺牲于同心）',role:'豫海县回民自治政府主席',seal:'回',
+  quote:'为民族的解放，虽死无悔！',
+  speech:'马和福，一八九三年生于甘肃临夏，后在宁夏同心打长工为生。一九三六年六月红军西征到同心，他主动参加革命，被选为豫旺苏维埃政府主席，同年七月加入中国共产党。十月二十日，陕甘宁省豫海县回民自治政府在同心清真大寺成立，他当选主席兼县回民游击大队队长，这是中国历史上第一个县级回族自治政权。十一月十二日，红军三大主力会聚同心，豫海县回民自治政府在同心城西门外河滩召开军民联欢大会，他代表政府和人民致欢迎词。任内他带领回汉群众为红军筹粮六万多斤、筹集银圆八万多块。一九三七年二月，他被反动民团逮捕，国民党宁夏省主席马鸿逵亲自审讯、酷刑逼供，他始终坚贞不屈，留下了“为民族的解放，虽死无悔”的铮铮誓言。四月三日，马和福在同心城西门外河滩英勇就义，年仅四十四岁。',
+  sections:[
+   ['西征路上 · 投身革命','马和福，1893年出生于甘肃河州（今临夏），后流落宁夏同心，长期打长工、做雇工，受尽压迫。1936年6月红军西征到同心，他主动参加革命，积极为红军筹粮、宣传群众，被选为豫旺苏维埃政府主席，7月加入中国共产党。'],
+   ['民族自治 · 开天辟地','1936年10月20日，陕甘宁省豫海县回民自治政府在同心清真大寺召开成立大会，马和福当选主席兼县回民游击大队队长。这是中国历史上第一个县级回族自治政权，是党的民族区域自治制度的一次重要实践。他任内带领回汉群众为红军筹粮6万多斤、筹集银圆8万多块。'],
+   ['军民联欢 · 迎接红军','1936年11月12日，红军三大主力会聚同心，豫海县回民自治政府在同心城西门外河滩召开军民联欢大会，朱德、彭德怀、王稼祥、贺龙等出席，马和福代表自治政府和回汉群众致欢迎词。'],
+   ['酷刑不屈 · 河滩就义','1937年2月，马和福在锁家岔被反动民团抓捕，押送国民党宁夏省党部。马鸿逵多次酷刑逼供、亲自升堂审讯，一无所获。1937年4月3日，马和福在同心城西门外河滩英勇就义，时年44岁，临刑前留下“为民族的解放，虽死无悔！”的誓言。'],
+   ['一方大印 · 藏到解放','自治政府那枚大印，是他被敌人四处通缉时亲手藏进自家炕洞的；他的儿子马兆年冒着生命危险一直保存到新中国成立，后无偿捐献。如今，这枚大印作为国家一级文物收藏在宁夏博物馆。']
+  ],
+  shout:'为民族的解放，虽死无悔！',
+  src:'宁夏党史学习教育网 · 马和福：陕甘宁省豫海县回民自治政府主席；宁夏回族自治区民委 · 我国第一个县级回族自治政权；中央党史和文献研究院 · 自治政府成立大会旧址；中国军网'},
+ {name:'李天才',audio:'litiancai',years:'1908 — 1933',home:'宁夏中宁',role:'宁夏早期党员 · 工运骨干',seal:'铁',
+  quote:'中国工人爱国反帝，何罪之有？',
+  speech:'李天才，字达之，一九〇八年三月四日生于宁夏中宁县枣园乡。一九二六年，冯玉祥国民军联军中的共产党人在当地开展革命活动，他深受影响；一九二九年考入宁夏中学，一九三一年初在狱中经杜润芝介绍加入中国共产党，参与策划宁安堡兵暴、靖远水泉兵暴等武装斗争。后来他到北平，在华北工运委员会从事宣传组织工作，又深入门头沟煤矿发动工人运动。一九三三年，他被国民党特务逮捕，关押在天津监狱，敌人以老虎凳、压杠子、灌辣椒水、烙铁烫等酷刑逼他交出地下党组织和党员名单，他始终坚贞不屈，义正词严地反问：“中国工人有爱自己国家、反对帝国主义侵略、保卫国家主权的自由，何罪之有？”最终被酷刑折磨致死，年仅二十五岁。',
+  sections:[
+   ['枣园青年 · 塞上星火','李天才，字达之，1908年3月4日生于宁夏中宁县枣园乡。1926年冯玉祥国民军联军驻屯枣园堡时，他跟随部队中的共产党员深入学校开展反帝反封建活动；1929年考入宁夏中学，接受新思想。'],
+   ['狱中入党 · 策划兵暴','1931年初，他在狱中经杜润芝介绍加入中国共产党，随后参与策划宁安堡兵暴、靖远水泉兵暴等武装斗争，是宁夏早期革命活动的重要骨干。'],
+   ['津门工运 · 酷刑殉难','后到北平，在华北工运委员会从事宣传组织工作，深入门头沟煤矿发动工人。1933年被国民党特务逮捕，关押天津监狱。坐老虎凳、压杠子、灌辣椒水、烙铁烫……敌人要他交出地下党组织和党员名单，他始终坚贞不屈，义正词严地反问：“中国工人有爱自己国家、反对帝国主义侵略、保卫国家主权的自由，何罪之有？”终被酷刑致死，年仅25岁。']
+  ],
+  shout:'中国工人有爱自己国家、反对帝国主义侵略、保卫国家主权的自由，何罪之有？',
+  src:'中共银川市委党史研究室 · 李天才；宁夏党史学习教育网；中央党史和文献研究院 · 飘扬在宁夏的一缕红色丝带'},
+ {name:'王克和',audio:'wangkehe',years:'1906 — 1947',home:'宁夏永宁',role:'宁夏工委地下工作者',seal:'刚',
+  quote:'挺着些吧，不久就会解放，那时大家都有好日子过。',
+  speech:'王克和，又名王景文，一九〇六年生于宁夏永宁县望洪乡西河村一个贫农家庭。他从小劳动，受尽抓兵苛捐之苦。一九四四年夏，他加入中国共产党，长期从事宁夏工委的地下交通与情报工作。一九四七年二月，宁夏工委转移到三段地，他仍坚持在敌后斗争。后来不幸被捕，在无口供、无证据的情况下，一九四七年九月三日，王克和被马鸿逵密令枪杀于永宁县城南桥子刑场，年仅四十一岁。临难前，他隔着铁窗叮嘱妻子：挺着些吧，好好照管孩子，不久就会解放，那时大家都有好日子过！',
+  sections:[
+   ['贫农之子 · 秘密入党','王克和，又名王景文，1906年生于宁夏永宁县望洪乡西河村一个贫农家庭，从小参加劳动，未读过书。马鸿逵统治宁夏时期连年抓兵、苛捐杂税，他在苦难中寻找出路。1944年夏加入中国共产党。'],
+   ['敌后交通 · 坚持斗争','入党后，他长期从事宁夏工委的地下交通与情报工作。1947年2月工委转移到内蒙古三段地后，他仍冒着危险坚持在敌后联络群众、传递情报。'],
+   ['南桥子刑场 · 黎明遗言','后不幸被捕，无口供、无证据。1947年9月3日，王克和被马鸿逵密令枪杀于永宁县城南桥子刑场，年仅41岁。临难前，他隔着铁窗叮嘱妻子：“挺着些吧，好好照管孩子，不久就会解放。那时大家都有好日子过！”']
+  ],
+  shout:'',
+  src:'中共银川市委党史研究室 · 王克和、王克和烈士墓；华兴时报 · 王克和：英勇事迹激励后人'},
+ {name:'张子华',audio:'zhangzihua',years:'1914 — 1942',home:'宁夏中宁',role:'中共中央统战部联络局副局长 · 周恩来秘书',seal:'先',pioneer:true,
+  quote:'四渡南京延安，为合作奔走；积劳成疾病逝，塞上先驱长存。',
+  speech:'这里特别陈列一位革命先驱——张子华。他原名王绪祥，一九一四年生于宁夏中宁，一九三〇年在北平加入中国共产党，曾任中华全国总工会华北工会党团书记。西安事变前后，他在周恩来直接领导下，担任中共中央统战部联络局副局长，以红军代表身份四次往返南京与延安之间，传递密信、调停斡旋，推动国共合作和抗日民族统一战线形成。因长期在白色恐怖下秘密奔走，他积劳成疾、身患严重肺病，一九四二年病逝于延安，年仅二十八岁。他同样为革命事业燃尽了自己，是宁夏人引以为傲的革命先驱。',
+  sections:[
+   ['中宁青年 · 投身革命','张子华，原名王绪祥，1914年出生于宁夏中宁县。1930年到北平读书，同年加入中国共产党，曾任中华全国总工会华北工会党团书记，在白区从事工人运动和统一战线工作。'],
+   ['四渡南京 · 统战密使','西安事变前后，他在周恩来直接领导下任中共中央统战部联络局副局长，以红军代表身份四次往返南京与延安之间，传递密信、调停斡旋，推动国共合作和抗日民族统一战线形成。'],
+   ['积劳成疾 · 病逝延安','因长期在白色恐怖下秘密奔走、出生入死，张子华身患严重肺病，1942年不幸病逝于延安，年仅28岁。'],
+   ['特别说明 · 先驱病逝','张子华因长期在白色恐怖下秘密奔走、出生入死，积劳成疾、身患严重肺病，1942年病逝于延安，年仅28岁。他虽未倒在枪林弹雨之中，却同样为革命事业燃尽了自己，是宁夏人引以为傲的革命先驱。']
+  ],
+  shout:'',
+  src:'中共宁夏区委党史研究室 · 宁夏党史人物；银川新闻网 · 宁夏最早的革命先驱之一张子华'}
+];
+
+const TIMELINE=[
+ {date:'1935年8月15日',title:'红军先声入宁夏',text:'红二十五军长征进入西吉<b>单家集</b>，严格执行民族政策，尊重回族风俗，被回族群众称为“仁义之师”，是第一支长征经过宁夏的红军队伍。'},
+ {date:'1935年10月5日',title:'单家集夜话',text:'毛泽东夜宿单家集，在陕义堂清真寺土炕上与阿訇马德海促膝长谈，宣讲党的民族宗教政策和抗日主张，留下<b>民族团结的红色佳话</b>。'},
+ {date:'1935年10月7日',title:'红旗漫卷六盘山',text:'中央红军翻越长征途中最后一座大山六盘山，毛泽东构思《清平乐·六盘山》，<b>“不到长城非好汉”</b>的精神丰碑矗立塞上。'},
+ {date:'1936年6月21日',title:'盐池城头红旗扬',text:'红十五军团七十八师（师长韩先楚、政委崔田民）解放盐池县城，建立<b>宁夏第一个县级红色政权</b>——“宁夏第一县”。盐池从此成为陕甘宁边区重要组成部分，红旗一直坚持到全国解放。'},
+ {date:'1936年10月20日',title:'豫海回民自治',text:'陕甘宁省豫海县回民自治政府在<b>同心清真大寺</b>成立，马和福任主席，是<b>中国历史上第一个县级回族自治政权</b>。',red:true},
+ {date:'1936年10月22日',title:'将台堡胜利会师',text:'红二方面军与红一方面军主力在西吉将台堡会师，这是<b>红军长征最后一次会师</b>，标志着二万五千里长征胜利结束。'},
+ {date:'1936年11月12日',title:'同心城军民联欢',text:'红军三大主力会聚同心，豫海县回民自治政府在同心城西门外河滩召开<b>军民联欢大会</b>，朱德、彭德怀、王稼祥、贺龙等出席，马和福代表自治政府致欢迎词。'},
+ {date:'1937年4月3日',title:'马和福慷慨就义',text:'豫海县回民自治政府主席马和福在同心城西门外河滩英勇就义，<b>年仅44岁</b>，民族自治的第一面红旗未倒。',red:true},
+ {date:'1938—1943年',title:'盐湖运盐支前线',text:'盐池军民大力打盐、运盐，三五九旅四支队两千余名指战员参加打盐生产；这一时期运出食盐<b>12.5亿公斤</b>，成为陕甘宁边区的经济支柱。'},
+ {date:'1941年4月17日',title:'银川深夜忠魂烈',text:'崔景岳、马文良、孟长有三位共产党人被活埋于银川城隍庙后，临刑前齐声高呼<b>“中国共产党万岁”</b>。',red:true},
+ {date:'1947年9月3日',title:'王克和血洒南桥子',text:'地下党员王克和在永宁南桥子刑场英勇就义，临刑前叮嘱家人：<b>“不久就会解放，那时大家都有好日子过！”</b>',red:true},
+ {date:'1947年9月',title:'贺兰山下节不屈',text:'回汉支队战士任天才奉命坚持地下斗争，被捕后受尽酷刑、宁死不屈，<b>始终没有暴露党组织</b>，壮烈牺牲。',red:true},
+ {date:'1949年8月1日',title:'浴血任山河',text:'第十九兵团六十四军在彭阳任山河发起总攻，<b>打开解放宁夏南大门</b>，364名指战员长眠青山。',red:true},
+ {date:'1949年9月23日',title:'银川迎解放',text:'人民解放军进驻银川，<b>宁夏省会银川解放</b>，塞上大地迎来新生。'},
+ {date:'2024年3月',title:'“宁夏英烈”平台上线',text:'宁夏英烈网上线开通，收录<b>1985名烈士</b>信息，全区建有<b>13处县级以上烈士陵园</b>，让每一位烈士都被时代铭记。纪念碑上刻不下1985个名字，但数字本身，就是他们的名字。'}
+];
+
+const SITES=[
+ {img:0,date:'1941年4月17日',title:'三烈士就义旧址',place:'银川市兴庆区 · 景岳小学（城隍庙后）',
+  desc:'崔景岳、马文良、孟长有三位共产党人在此英勇就义。三烈士临刑前视死如归、大义凛然，齐声高呼“中国共产党万岁”。今天的景岳小学就坐落在就义旧址旁，红色基因在书声中代代相传。',
+  speech:'一九四一年四月十七日深夜，崔景岳、马文良、孟长有三位共产党人，被国民党反动派活埋于银川城隍庙后。临刑前，三位志士视死如归、大义凛然，齐声高呼：中国共产党万岁！今天的景岳小学，就建在三烈士英勇就义的旧址旁。'},
+ {img:1,date:'1936年6月21日',title:'盐池城头红旗扬',place:'吴忠市盐池县 · 花马池古城',
+  desc:'红七十八师解放盐池县城，建立宁夏第一个县级红色政权。盐池是宁夏唯一的革命老区，陕甘宁边区的“宁”指的就是盐池。“三五九旅打盐”支援前线，盐池成为边区经济支柱，城头红旗坚持了13年。',
+  speech:'一九三六年六月二十一日，红七十八师解放盐池县城，建立宁夏第一个县级红色政权。盐池是宁夏唯一的革命老区，陕甘宁边区的“宁”，指的就是盐池。盐湖打盐、支援前线，盐池成为边区经济支柱，城头红旗一直坚持到全国解放。'},
+ {img:2,date:'1949年8月1日',title:'浴血任山河 · 解放宁夏第一仗',place:'固原市彭阳县 · 任山河烈士陵园',
+  desc:'第一野战军第十九兵团六十四军向任山河守敌发起总攻，三昼夜浴血奋战，打开了解放宁夏的南大门，364名指战员长眠青山。',
+  speech:'一九四九年八月一日，第一野战军第十九兵团六十四军，在宁夏彭阳任山河向国民党守军发起总攻。经过浴血奋战，打开了解放宁夏的南大门。战斗中，三百六十四名解放军指战员壮烈牺牲，长眠在任山河的青山之中。'},
+ {img:3,date:'1936年10月22日',title:'将台堡胜利会师',place:'固原市西吉县 · 将台堡红军会师纪念馆',
+  desc:'红二方面军总指挥部及红二军团到达将台堡，与红一方面军主力会师。这是红军长征最后一次会师，标志着二万五千里长征胜利结束。',
+  speech:'一九三六年十月二十二日，红二方面军总指挥部和红二军团到达宁夏西吉将台堡，同红一方面军主力第二师胜利会师。将台堡会师是红军长征中的最后一次会师，它标志着震惊中外的两万五千里长征胜利结束。'},
+ {img:4,date:'1935年10月',title:'红旗漫卷六盘山',place:'固原市泾源县 · 六盘山红军长征景区',
+  desc:'中央红军长征翻越六盘山——长征途中最后一座大山。毛泽东在山巅写下《清平乐·六盘山》，“不到长城非好汉”的精神从此响彻塞上。',
+  speech:'一九三五年十月，中央红军长征翻越六盘山，这是红军长征途中翻越的最后一座大山。毛泽东同志在六盘山巅写下《清平乐·六盘山》：天高云淡，望断南飞雁。不到长城非好汉，屈指行程二万。六盘山，从此成为长征精神的重要象征。'}
+];
+
+/* ================= 英烈长廊渲染 ================= */
+const wall=document.getElementById('martyrWall');
+wall.innerHTML=MARTYRS.map((m,i)=>`
+ <div class="m-card ${i<3?'group-trio':''} ${m.pioneer?'is-pioneer':''}" role="button" tabindex="0" data-martyr="${i}" aria-label="查看${m.name}事迹">
+  <div class="seal">${m.seal}</div>
+  ${m.pioneer?'<div class="pioneer-tag">革命先驱 · 病逝</div>':''}
+  ${PINE_SVG}${STAR_SVG}
+  <h3>${m.name}</h3>
+  <div class="meta">${m.years} · ${m.home}<br>${m.role}</div>
+  <div class="quote">${m.quote}</div>
+  <div class="open">${ARROW_SVG}查阅事迹</div>
+ </div>`).join('');
+
+/* ================= 时间轴渲染 ================= */
+document.getElementById('timelineBox').innerHTML=TIMELINE.map((t,i)=>`
+ <div class="tl-row">
+  <div class="tl-date"><b>${t.date}</b></div>
+  <div class="tl-axis"><span class="tl-dot ${t.red?'red':''}"></span></div>
+  <div class="tl-card reveal"><h3>${t.title}</h3><p>${t.text}</p></div>
+ </div>`).join('');
+
+/* ================= 弹窗 + AI讲解 ================= */
+const modal=document.getElementById('modal');
+const mTitle=document.getElementById('mTitle'),mMeta=document.getElementById('mMeta'),
+      mText=document.getElementById('mText'),mSrc=document.getElementById('mSrc'),mSpeak=document.getElementById('mSpeak');
+let currentSpeech='';
+
+function openMartyr(i){
+  const m=MARTYRS[i];
+  stopSpeak();
+  const bannerMap=[0,0,0,2,4,3,0,0,0];
+  document.getElementById('mBanner').src=document.querySelector('#siteImgPool [data-img="'+bannerMap[i]+'"]').src;
+  mTitle.innerHTML=(m.pioneer?'<span class="m-pioneer-flag">革命先驱 · 病逝</span>':'')+m.name;
+  mMeta.innerHTML=`<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>${m.home}</span>
+   <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg>${m.years}</span>
+   <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>${m.role}</span>`;
+  mText.innerHTML=m.sections.map(s=>`<h4>${s[0]}</h4><p>${s[1]}</p>`).join('')
+    +(m.shout?`<div class="quote-line">“${m.shout}”</div>`:'');
+  mSrc.textContent='史料来源：'+m.src;
+  currentSpeech=m.speech;
+  mSpeak.dataset.audio=m.audio||'';
+  if(m.audio)prefetchVoiceSafe(m.audio);
+  resetSpeakBtn(mSpeak);
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  modal.classList.remove('open');
+  document.body.style.overflow='';
+  stopSpeak();
+}
+wall.addEventListener('click',e=>{const card=e.target.closest('[data-martyr]');if(card)openMartyr(+card.dataset.martyr);});
+wall.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const card=e.target.closest('[data-martyr]');if(card){e.preventDefault();openMartyr(+card.dataset.martyr);}}});
+wall.addEventListener('mouseover',e=>{const card=e.target.closest('[data-martyr]');if(card){const m=MARTYRS[+card.dataset.martyr];if(m&&m.audio)prefetchVoiceSafe(m.audio);}});
+modal.addEventListener('click',e=>{if(e.target.closest('[data-close]'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});
+
+/* ================= 语音合成（自然音色，与3D展厅共用） ================= */
+let zhVoices=[];
+function refreshVoices(){
+  if(!('speechSynthesis' in window))return;
+  const vs=speechSynthesis.getVoices();
+  zhVoices=vs.filter(v=>/zh|cmn|chinese|mandarin/i.test(v.lang+v.name));
+}
+function pickChineseVoice(){
+  if(!zhVoices.length)refreshVoices();
+  const prefs=['Microsoft Huihui','Microsoft Yunxi','Microsoft Yunyang','Microsoft Yaoyao','Microsoft Kangkang','Google 普通话','Google Mandarin','Tingting','Mei-Jia','Sin-ji','Tian-Tian'];
+  for(const p of prefs){const f=zhVoices.find(v=>v.name===p||v.name.includes(p));if(f)return f;}
+  return zhVoices[0]||null;
+}
+function stopSpeak(){
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  document.querySelectorAll('audio').forEach(a=>a.pause());
+  document.querySelectorAll('.btn-speak').forEach(b=>{b.classList.remove('playing');b.textContent='AI 讲解';});
+  resetAllSpeakBtns();
+}
+function resetSpeakBtn(btn){btn.classList.remove('playing');btn.querySelector('.speak-label').textContent=btn.dataset.label||'AI 讲解员朗读';}
+function resetAllSpeakBtns(){document.querySelectorAll('.speak-btn').forEach(b=>{b.classList.remove('playing');b.querySelector('.speak-label').textContent=b.dataset.label||'AI 讲解员朗读';});}
+function ttsSpeak(btn){
+  if(!('speechSynthesis' in window)){resetSpeakBtn(btn);return;}
+  const u=new SpeechSynthesisUtterance(btn.dataset.speech||'');
+  u.lang='zh-CN';u.rate=.88;u.pitch=.96;
+  const v=pickChineseVoice();if(v)u.voice=v;
+  u.onend=()=>resetSpeakBtn(btn);
+  u.onerror=()=>resetSpeakBtn(btn);
+  btn.classList.add('playing');
+  btn.querySelector('.speak-label').textContent='停止朗读';
+  speechSynthesis.speak(u);
+}
+var VOICE_CACHE={};
+function prefetchVoiceSafe(key){try{primeVoice(key).catch(function(){});}catch(e){}}
+function primeVoice(key,el){
+  if(!key)return Promise.reject(new Error('no-key'));
+  if(VOICE_CACHE[key])return VOICE_CACHE[key];
+  var node=el||document.getElementById('voice-'+key);
+  if(!node)return Promise.reject(new Error('no-node'));
+  var src=node.getAttribute('data-src')||node.getAttribute('src');
+  if(!src)return Promise.reject(new Error('no-src'));
+  node.setAttribute('data-src',src);
+  VOICE_CACHE[key]=fetch(src).then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.blob();}).then(function(b){
+    var url=URL.createObjectURL(new Blob([b],{type:'audio/mpeg'}));
+    node.src=url;node.load();
+    return node;
+  }).catch(function(e){delete VOICE_CACHE[key];throw e;});
+  return VOICE_CACHE[key];
+}
+function playVoiceAudio(btn,av){
+  function markPlaying(){
+    btn.classList.add('playing');
+    btn.querySelector('.speak-label').textContent='正在载入…';
+  }
+  function attemptPlay(){
+    av.currentTime=0;
+    const p=av.play();
+    if(p&&p.catch)p.catch(function(){
+      setTimeout(function(){const p2=av.play();if(p2&&p2.catch)p2.catch(()=>resetSpeakBtn(btn));},500);
+    });
+  }
+  markPlaying();
+  av.onended=()=>resetSpeakBtn(btn);
+  av.onerror=()=>{if(btn.classList.contains('playing'))resetSpeakBtn(btn);};
+  av.preload='auto';
+  var startPlay=function(){
+    if(!btn.classList.contains('playing'))return;
+    var p;try{p=av.play();}catch(e){p=null;}
+    if(p&&p.then)p.then(function(){if(btn.classList.contains('playing'))btn.querySelector('.speak-label').textContent='停止朗读';});
+    if(p&&p.catch)p.catch(function(){setTimeout(function(){if(btn.classList.contains('playing')){try{av.play();}catch(e){}}},600);});
+  };
+  primeVoice(btn.dataset.audio,av).then(startPlay).catch(startPlay);
+}
+function toggleSpeak(text,btn){
+  if(btn.classList.contains('playing')){stopSpeak();return;}
+  stopSpeak();
+  btn.dataset.speech=text;
+  const av=btn.dataset.audio?document.getElementById('voice-'+btn.dataset.audio):null;
+  if(av&&av.getAttribute('src')){playVoiceAudio(btn,av);return;}
+  ttsSpeak(btn);
+}
+refreshVoices();
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=refreshVoices;
+mSpeak.dataset.label='AI 讲解员朗读事迹';
+mSpeak.addEventListener('click',()=>toggleSpeak(currentSpeech,mSpeak));
+const siteSpeak=document.getElementById('siteSpeak');
+siteSpeak.dataset.label='AI 讲解员朗读';
+
+/* ================= 红色地图 ================= */
+const siteImg=document.getElementById('siteImg'),siteDate=document.getElementById('siteDate'),
+      siteTitle=document.getElementById('siteTitle'),sitePlace=document.getElementById('sitePlace'),
+      siteDesc=document.getElementById('siteDesc'),chips=document.getElementById('siteChips');
+chips.innerHTML=SITES.map((s,i)=>`<button class="site-chip ${i===0?'active':''}" data-site-chip="${i}">${s.place.split(' · ')[0]}</button>`).join('');
+function selectSite(i){
+  stopSpeak();
+  const s=SITES[i];
+  const pool=document.querySelector('#siteImgPool [data-img="'+s.img+'"]');
+  siteImg.src=pool.src;siteImg.alt=s.title;
+  siteDate.textContent=s.date;siteTitle.textContent=s.title;
+  sitePlace.textContent=s.place;siteDesc.textContent=s.desc;
+  document.querySelectorAll('.map-point').forEach(p=>p.classList.toggle('active',+p.dataset.site===i));
+  document.querySelectorAll('.site-chip').forEach(c=>c.classList.toggle('active',+c.dataset.siteChip===i));
+}
+document.querySelectorAll('.map-point').forEach(p=>p.addEventListener('click',()=>selectSite(+p.dataset.site)));
+chips.addEventListener('click',e=>{const c=e.target.closest('[data-site-chip]');if(c)selectSite(+c.dataset.siteChip);});
+siteSpeak.addEventListener('click',()=>{
+  const active=SITES.findIndex((s,i)=>document.querySelector('.map-point[data-site="'+i+'"]').classList.contains('active'));
+  toggleSpeak(SITES[active].speech,siteSpeak);
+});
+selectSite(0);
+
+/* ================= 云端献花 ================= */
+const flowerBtn=document.getElementById('flowerBtn'),flowerCount=document.getElementById('flowerCount');
+let flowerNum=+(localStorage.getItem('nx_flower')||0);
+flowerCount.textContent=flowerNum;
+function flyFlower(x,y){
+  const f=document.createElement('div');f.className='flower-fly';
+  f.style.left=(x-13)+'px';f.style.top=(y-13)+'px';
+  f.innerHTML='<svg viewBox="0 0 24 24"><g fill="#e8b4b8"><circle cx="12" cy="7" r="4"/><circle cx="17" cy="12" r="4"/><circle cx="12" cy="17" r="4"/><circle cx="7" cy="12" r="4"/></g><circle cx="12" cy="12" r="2.6" fill="#c9a24b"/></svg>';
+  document.body.appendChild(f);
+  f.style.marginLeft=(Math.random()*70-35)+'px';
+  setTimeout(()=>f.remove(),1800);
+}
+flowerBtn.addEventListener('click',e=>{
+  flowerNum++;localStorage.setItem('nx_flower',flowerNum);
+  flowerCount.textContent=flowerNum;
+  const r=flowerBtn.getBoundingClientRect();
+  for(let k=0;k<4;k++)setTimeout(()=>flyFlower(r.left+r.width/2+(k-1.5)*18,r.top+r.height/2),k*90);
+});
+
+/* ================= 青春寄语 ================= */
+const msgList=document.getElementById('msgList'),msgName=document.getElementById('msgName'),msgText=document.getElementById('msgText');
+let msgs=[];try{msgs=JSON.parse(localStorage.getItem('nx_msgs')||'[]');}catch(e){msgs=[];}
+function renderMsgs(){
+  if(!msgs.length){msgList.innerHTML='<div class="msg-empty">还没有寄语，留下第一句给英烈的话。</div>';return;}
+  msgList.innerHTML=msgs.map(m=>`<div class="msg-item"><span class="when">${m.t}</span><span class="who">${m.n}</span><div class="txt">${m.c}</div></div>`).join('');
+}
+renderMsgs();
+document.getElementById('msgSubmit').addEventListener('click',()=>{
+  const n=msgName.value.trim()||'塞上青年',c=msgText.value.trim();
+  if(!c){msgText.focus();return;}
+  const d=new Date();
+  const t=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
+  msgs.unshift({n:n.slice(0,12),c:c.slice(0,120),t});
+  localStorage.setItem('nx_msgs',JSON.stringify(msgs.slice(0,50)));
+  msgText.value='';msgName.value='';
+  renderMsgs();
+});
+
+/* ================= 导航与滚动揭示 ================= */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
+const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');
+navToggle.addEventListener('click',()=>navLinks.classList.toggle('open'));
+navLinks.addEventListener('click',e=>{if(e.target.tagName==='A')navLinks.classList.remove('open');});
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.14});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+/* 兜底：锚点瞬间跳转、打印或低性能场景，确保视口附近的 reveal 立即显现 */
+function flushReveal(){
+  const vh=window.innerHeight;
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>{
+    if(el.getBoundingClientRect().top < vh+80) el.classList.add('in');
+  });
+}
+let revealTicking=false;
+window.addEventListener('scroll',()=>{
+  if(!revealTicking){revealTicking=true;requestAnimationFrame(()=>{flushReveal();revealTicking=false;});}
+},{passive:true});
+window.addEventListener('hashchange',()=>{setTimeout(flushReveal,80);setTimeout(flushReveal,350);});
+window.addEventListener('load',flushReveal);
+
+/* ================= 3D沉浸式展厅（15展品增强版，three.js 懒加载） ================= */
+const ARTWORKS=[
+  {key:'xiezichang',side:-1,z:18.2,date:'1934年',title:'谢子长 · 陕北红军的播火者',audio:'xiezichang',
+   desc:'谢子长是陕北红军和陕北苏区的主要创建人之一，与刘志丹并肩开辟陕甘边革命根据地。他虽长期战斗于陕北，却深刻影响了后来进入宁夏的红军。1934年河口战斗中他身负重伤，1935年2月21日因伤势恶化逝世，年仅38岁。毛泽东为他题词“民族英雄”“虽死犹荣”。',
+   speech:'这幅作品，献给陕北红军的播火者谢子长。他与刘志丹并肩开辟了陕甘边革命根据地，为后来红军三大主力落脚西北奠定了根基。1934年河口战斗，他身负重伤，1935年2月，年仅38岁的谢子长因伤势恶化逝世。毛泽东为他题词“民族英雄”“虽死犹荣”。陕北的根基，正是宁夏红色记忆的起点。'},
+  {key:'hong25',side:1,z:15.6,date:'1935年8月',title:'红军先声入宁夏',audio:'hong25',
+   desc:'1935年8月15日，红25军在政委吴焕先、军长程子华率领下，进入宁夏西吉县境内，成为第一支到达宁夏的红军主力部队。17日攻克隆德县城，随后翻越六盘山，在回民聚居区严格执行民族宗教政策，留下了“红军是仁义之师”的口碑。',
+   speech:'1935年8月，红25军成为第一支进入宁夏的红军主力。在吴焕先、程子华率领下，他们经过西吉，攻克隆德，翻越六盘山。在回民聚居区，红军战士宁可露宿野外，也不进清真寺，不吃猪肉、不借回民炊具，用严明的纪律赢得了回族群众的心。这支先声之师，为两个月后中央红军经过宁夏铺好了路。'},
+  {key:'liupanshan',side:-1,z:13.0,date:'1935年10月',title:'红旗漫卷六盘山',audio:'poem',
+   desc:'1935年10月5日至9日，中央红军（红一方面军）长征途经宁夏六盘山地区。10月7日，毛泽东登上六盘山，时值红军将士胜利在望，诗人心潮澎湃，写下著名词篇《清平乐·六盘山》。“六盘山上高峰，红旗漫卷西风。今日长缨在手，何时缚住苍龙？”',
+   speech:'1935年10月7日，毛泽东登上六盘山。天高云淡，北雁南飞，他望着这支历经万难、依然紧握长缨的队伍，挥笔写下《清平乐·六盘山》：“六盘山上高峰，红旗漫卷西风。今日长缨在手，何时缚住苍龙？”从此，六盘山成为长征精神的象征，“不到长城非好汉”也成为宁夏大地上最响亮的精神宣言。'},
+  {key:'qingshizui',side:1,z:10.4,date:'1935年10月7日',title:'青石嘴骑兵战',audio:'qingshizui',
+   desc:'1935年10月7日，中央红军在六盘山下青石嘴遭遇国民党东北军骑兵第7师。红军果断出击，歼敌两个连，缴获战马100余匹及大量弹药物资。随后以这批战马为基础，组建了中央红军第一支骑兵侦察连，青石嘴战斗因此成为中国人民解放军骑兵部队的起点。',
+   speech:'就在毛泽东写下《清平乐·六盘山》的同一天，10月7日，山下的青石嘴爆发了一场遭遇战。红军以迅雷之势，歼灭东北军骑兵两个连，缴获战马一百多匹。正是这批战马，组建了中央红军第一支骑兵侦察连。从步兵到骑兵，青石嘴之战，是人民解放军骑兵部队的起点。'},
+  {key:'yanchi',side:-1,z:7.8,date:'1936年6月21日',title:'盐池城头红旗扬',audio:'yanchi',
+   desc:'1936年6月21日，红15军团78师在师长韩先楚指挥下攻克盐池县城，全歼守敌马鸿逵部一个骑兵营和民团，盐池成为宁夏第一个解放的县城。此后盐池县作为陕甘宁边区的重要组成部分，坚持革命政权直到全国解放，是宁夏唯一经历了土地革命、抗日战争、解放战争三个时期的革命老区县。',
+   speech:'1936年6月21日，韩先楚指挥红78师攻克盐池，红旗第一次插上了宁夏的城头。盐池从此成为陕甘宁边区的组成部分，打土豪、分田地、建政权，一直坚持到全国解放。它是宁夏唯一经历了土地革命、抗日战争、解放战争三个时期的革命老区县，是宁夏土地上最持久的一抹红。'},
+  {key:'xiaohao',side:1,z:5.2,date:'1936年夏',title:'西征号角 · 红军在宁夏',audio:'xiaohao',
+   desc:'1936年5月至7月，红军西方野战军在司令员彭德怀率领下发起西征，在宁夏境内开辟了大片新区。红军转战盐池、豫旺、固原一带，宣传抗日、建立政权、团结回民，把革命的火种播撒在宁夏中部的广大土地上，为三大主力会师创造了条件。',
+   speech:'1936年夏天，彭德怀率领西方野战军西征，红军的号角响遍宁夏。部队转战盐池、豫旺、固原，一路宣传抗日、建立政权、团结回民。西征的意义，不仅在于开辟了大片新区，更在于为几个月后红军三大主力会师、为民族区域自治的第一次实践，铺平了道路。'},
+  {key:'yuhui',side:-1,z:2.6,date:'1936年10月20日',title:'豫海回民自治 · 民族自治先声',audio:'yuhui',
+   desc:'1936年10月20日，陕甘宁省豫海县回民自治政府在同心清真大寺成立，马和福当选主席。这是中国共产党历史上第一个县级回族自治政权，开创了民族区域自治的先河。它颁布《回民自治政府条例》，选举回民代表，是民族区域自治制度最初的实践源头。',
+   speech:'1936年10月20日，同心清真大寺里，诞生了一个前所未有的政权——陕甘宁省豫海县回民自治政府，马和福当选主席。这是中国共产党历史上第一个县级回族自治政权，选举回民代表、颁布自治条例。今天的民族区域自治制度，最早的实践源头就在这座清真寺里。'},
+  {key:'jiangtaibu',side:1,z:0.0,date:'1936年10月22日',title:'三军会师将台堡',audio:'jiangtaibu',
+   desc:'1936年10月22日，红二方面军总指挥贺龙、政委任弼时率部在西吉将台堡与红一方面军会师。这是红一、二方面军的最后一次会师，标志着红军三大主力胜利会师的圆满完成。将台堡会师纪念碑上镌刻着“中国工农红军长征将台堡会师纪念碑”，是长征结束的重要历史地标。',
+   speech:'1936年10月22日，贺龙、任弼时率领红二方面军到达西吉将台堡，与红一方面军会师。这是红一、二方面军的最后一次会师，也标志着红军三大主力会师的圆满完成。长征，在宁夏的土地上画上了句号。将台堡因此成为长征结束的重要地标，这座丰碑至今矗立在葫芦河畔。'},
+  {key:'mahefu',side:-1,z:-2.6,date:'1936—1937年',title:'回民游击大队 · 马和福',audio:'mahefu',
+   desc:'豫海回民自治政府主席马和福在主力红军撤离后，带领回民游击大队坚持武装斗争。1937年2月，他被马鸿逵反动武装抓捕，在狱中受尽酷刑，坚贞不屈，于4月3日在同心城西门外英勇就义，年仅42岁。这位“回民的好儿子”，用生命守护了新生的自治政权。',
+   speech:'主力红军撤离后，马和福没有走。他带领回民游击大队，在同心一带继续战斗。1937年2月，他被马鸿逵反动武装抓捕，受尽酷刑，坚贞不屈。4月3日，马和福在同心城西门外英勇就义，年仅42岁。他是回民的好儿子，是第一个县级回族自治政权的守夜人，用生命证明了信仰的分量。'},
+  {key:'yinchuan',side:1,z:-5.2,date:'1941年4月17日',title:'崔景岳 · 三烈士就义旧址',audio:'cuijingyue',
+   desc:'1940年，中共宁夏工委书记崔景岳（原名崔廷儒）在银川开展地下工作时被叛徒出卖被捕。1941年4月17日深夜，崔景岳与孟长有、马文良三位共产党人在银川城隍庙（今银川市兴庆区进宁北街）被敌人活埋杀害，史称“银川三烈士”。',
+   speech:'1941年4月17日深夜，银川城隍庙，三位共产党人被敌人推入挖好的大坑。崔景岳、孟长有、马文良，他们面对活埋，始终没有屈服。中共宁夏工委书记崔景岳牺牲时年仅30岁。他们没有看到黎明，却把黎明留给了这座城市。今天，银川市进宁北街的三烈士就义旧址，是我们必须驻足的地方。'},
+  {key:'renshanhe',side:-1,z:-7.8,date:'1949年8月1日',title:'浴血任山河 · 解放宁夏第一仗',audio:'renshanhe',
+   desc:'1949年8月1日，中国人民解放军第一野战军第19兵团在固原县任山河（今彭阳县城阳乡）与马鸿逵部展开激战。我军以364名战士牺牲的代价，歼敌5000余人，彻底打开了进军宁夏的南大门。任山河烈士陵园安葬着394名烈士，其中294名烈士没有留下姓名。',
+   speech:'1949年8月1日，建军节。彭阳任山河，打响了解放宁夏的第一仗。第19兵团的战士们强攻黄帽山、马家山、鹦鸽嘴，以364名战士牺牲的代价，歼敌5000余人，打开了进军宁夏的南大门。任山河烈士陵园里，394名烈士长眠于此，其中294人没有留下姓名。他们用无名，换来了宁夏的新生。'},
+  {key:'hero',side:1,z:-10.4,date:'1935—1949年',title:'不到长城非好汉 · 塞上忠魂',audio:'hero',
+   desc:'从1935年红军初入宁夏，到1949年宁夏解放，14年间，无数革命先烈在塞上大地献出生命。六盘山的誓词、盐池的红旗、将台堡的会师、任山河的冲锋，共同铸就了宁夏人民心中的精神丰碑。“不到长城非好汉”的革命精神，早已融入宁夏儿女的血脉。',
+   speech:'1935到1949，十四年，宁夏大地上红旗从未倒下。六盘山的誓词、盐池的红旗、将台堡的会师、任山河的冲锋，一次次牺牲，一声声呐喊，共同铸成了五个字——“不到长城非好汉”。这不是一句口号，而是无数无名烈士用生命写就的精神勋章。'},
+  {key:'yinchuan1949',side:-1,z:-13.0,date:'1949年9月23日',title:'银川迎解放 · 宁夏新生',audio:'yinchuan1949',
+   desc:'1949年9月19日，国民党第81军在中卫起义；9月23日，中国人民解放军第19兵团与宁夏方面签订《和平解决宁夏问题之协议》。当日，解放军先头部队进入银川，宁夏宣告解放。9月26日，银川市两万多回汉群众举行盛大集会，欢迎解放军，塞上大地从此翻开了新的历史篇章。',
+   speech:'1949年9月23日，和平解决宁夏问题的协议签署，解放军先头部队进入银川，宁夏宣告解放。9月26日，银川两万多回汉群众涌上街头，欢迎解放军。从1935年红军初入宁夏，到这一天，整整十四年，塞上大地终于迎来了黎明。红旗、秧歌、欢呼，属于这座城，更属于那些没有等到这一天的人。'},
+  {key:'cuijingyue2',side:1,z:-15.6,date:'1911—1941年',title:'崔景岳 · 铁骨丹心',audio:'cuijingyue2',
+   desc:'崔景岳，1911年生于陕西旬邑，1926年参加革命，1927年入党，曾任中共宁夏工委书记。在白色恐怖中，他重建被破坏的宁夏党组织，发展党员、建立据点。1940年因叛徒出卖被捕，狱中组建秘密支部，任支部书记，组织难友坚持斗争。1941年4月17日被活埋于银川，时年30岁。',
+   speech:'崔景岳，1911年生于陕西旬邑，15岁参加革命，16岁入党。1939年，他受党派遣来到宁夏，在白色恐怖中重建被破坏的党组织。被捕后，他在狱中组建秘密支部，带着难友继续斗争。1941年4月17日，30岁的崔景岳被敌人活埋。铁骨丹心，丹心永照。他在狱中写下的“我的一生，是为了共产主义事业奋斗的一生”，是他最后的誓言。'},
+  {key:'helan',side:-1,z:-18.2,date:'1949年',title:'贺兰山下祭英烈 · 精神永传',audio:'helan',
+   desc:'贺兰山烈士陵园、银川八里桥革命公墓、任山河烈士陵园、盐池革命烈士纪念园、西吉将台堡会师纪念碑——宁夏各地的烈士纪念设施，铭刻着为这片土地献出生命的革命先烈。每年清明，宁夏人民来到这里，献花、默哀、宣誓。山河为证，贺兰作证。',
+   speech:'从贺兰山到六盘山，从盐池到彭阳，宁夏大地上，处处是烈士的安息之地。贺兰山烈士陵园、八里桥革命公墓、任山河烈士陵园、盐池革命烈士纪念园……一座座纪念碑，就是一行行写在大地上的誓言。山河为证，贺兰作证。人民不会忘记，历史不会忘记。'}
+];
+const END_MURAL={key:'heritage',date:'精神永传',title:'革命烈士永垂不朽',audio:'oath',isEnd:true,
+  desc:'从1935年到1949年，红旗漫卷宁夏十四载。烈士们的名字，刻在六盘山、贺兰山、盐池、将台堡、任山河的土地上。革命烈士永垂不朽，塞上忠魂精神永存。',
+  speech:'走到这里，我们的展厅到了尽头。1935到1949，红旗漫卷宁夏十四载。谢子长、马和福、崔景岳、孟长有、马文良，以及294位没有留下姓名的任山河烈士……他们的名字，刻在了六盘山、贺兰山、盐池、将台堡的土地上。革命烈士永垂不朽，塞上忠魂精神永存。'};
+const HALL_ITEMS=ARTWORKS.concat([END_MURAL]);
+/* ----- 程序化版画纹理：远程图加载失败时的兜底 ----- */
+function makeTextCanvas(text,w,h,opts){
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  const g=c.getContext('2d');
+  opts=opts||{};
+  g.fillStyle=opts.bg||'#8c1d13';g.fillRect(0,0,w,h);
+  g.strokeStyle=opts.gold||'#c9a24b';g.lineWidth=6;g.strokeRect(20,20,w-40,h-40);
+  g.fillStyle=opts.gold||'#c9a24b';g.textAlign='center';
+  g.font='bold '+(opts.titleSize||42)+'px "Noto Serif SC","Songti SC","SimSun",serif';
+  var lines=text.split('\n');
+  var y=h/2-(lines.length-1)*28;
+  lines.forEach(function(l){g.fillText(l,w/2,y);y+=56;});
+  return c;
+}
+function drawStarShape(ctx,cx,cy,outer,inner,rot){
+  ctx.beginPath();
+  for(var i=0;i<5;i++){
+    var a=-Math.PI/2+i*2*Math.PI/5+(rot||0);
+    var x1=cx+Math.cos(a)*outer,y1=cy+Math.sin(a)*outer;
+    if(i===0)ctx.moveTo(x1,y1);else ctx.lineTo(x1,y1);
+    a+=Math.PI/5;
+    ctx.lineTo(cx+Math.cos(a)*inner,cy+Math.sin(a)*inner);
+  }
+  ctx.closePath();
+}
+function hashStr(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h+s.charCodeAt(i))|0;}return Math.abs(h);}
+function makePrintCanvas(key,title){
+  var W=512,H=384,c=document.createElement('canvas');c.width=W;c.height=H;
+  var g=c.getContext('2d');
+  var bg=g.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#7d1a14');bg.addColorStop(1,'#4a100c');
+  g.fillStyle=bg;g.fillRect(0,0,W,H);
+  g.fillStyle='rgba(201,162,75,0.06)';
+  for(var i=0;i<40;i++){var x=hashStr(key+i)%W,y=hashStr(key+i*7)%H,r=8+hashStr(key+i*3)%26;g.beginPath();g.arc(x,y,r,0,7);g.fill();}
+  g.strokeStyle='#c9a24b';g.lineWidth=5;g.strokeRect(18,18,W-36,H-36);
+  g.fillStyle='#c9a24b';drawStarShape(g,W/2,86,34,14,0);g.fill();
+  g.textAlign='center';g.fillStyle='#ecd39a';
+  g.font='bold 30px "Noto Serif SC","Songti SC","SimSun",serif';
+  var t=title.replace(/ · /,'\n');
+  var lines=t.split('\n');
+  var y0=H/2+14-(lines.length-1)*22;
+  lines.forEach(function(l){g.fillText(l,W/2,y0);y0+=44;});
+  g.font='15px "Noto Serif SC",serif';g.fillStyle='#c9a24b';
+  g.fillText('塞上忠魂 · 宁夏革命烈士数字画廊',W/2,H-34);
+  return c;
+}
+/* ----- WebGL 能力探测 ----- */
+function webglOK(){
+  try{
+    var c=document.createElement('canvas');
+    return !!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl')));
+  }catch(e){return false;}
+}
+/* ----- 讲解：真人预录音频优先，自然语音合成兜底 ----- */
+let currentUtter=null;
+function stopAllAudio(btn){
+  document.querySelectorAll('.asset-pool audio').forEach(a=>{a.pause();a.currentTime=0;});
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  currentUtter=null;
+  if(btn)btn.classList.remove('playing');
+}
+function speakByTTS(text,btn){
+  if(!('speechSynthesis' in window))return;
+  stopAllAudio();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='zh-CN';u.rate=.85;u.pitch=.95;u.volume=1;
+  const v=pickChineseVoice();if(v)u.voice=v;
+  u.onstart=()=>{currentUtter=u;btn.classList.add('playing');btn.textContent='停止讲解';};
+  u.onend=()=>{currentUtter=null;btn.classList.remove('playing');btn.textContent='AI 讲解';};
+  u.onerror=()=>{currentUtter=null;btn.classList.remove('playing');btn.textContent='AI 讲解';};
+  speechSynthesis.speak(u);
+}
+function playNarration(art,btn){
+  const ad=document.getElementById('audio-'+art.audio);
+  if(ad){
+    ad.currentTime=0;
+    const p=ad.play();
+    if(p&&p.catch){p.catch(()=>{speakByTTS(art.speech,btn);});}
+    ad.onended=()=>{btn.classList.remove('playing');btn.textContent='AI 讲解';};
+    btn.classList.add('playing');
+    btn.textContent='停止讲解';
+  }else{
+    speakByTTS(art.speech,btn);
+  }
+}
+/* ----- 3D 场景（three.js 懒加载完成后执行） ----- */
+function initHall3D(){
+  const hall3dBox=document.querySelector('.hall3d');
+  const fallback=document.getElementById('fallbackWall');
+  function fail(){if(hall3dBox)hall3dBox.style.display='none';if(fallback)fallback.classList.add('show');}
+  if(!window.THREE||!webglOK()){fail();return;}
+  const wrap=document.getElementById('threeWrap');
+  const loading=document.getElementById('hallLoading');
+  const loadFill=document.getElementById('loadFill');
+  const loadPct=document.getElementById('loadPct');
+  const loadTip=document.getElementById('loadTip');
+  const hint=document.getElementById('hallHint');
+  const infoBox=document.getElementById('artInfo');
+  const tourEnd=document.getElementById('tourEnd');
+  let renderer;
+  try{
+    renderer=new THREE.WebGLRenderer({antialias:true});
+    if(!renderer.getContext())throw new Error('no gl');
+  }catch(e){fail();return;}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.setSize(wrap.clientWidth,wrap.clientHeight);
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.domElement.style.display='block';
+  wrap.appendChild(renderer.domElement);
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x140a08);
+  scene.fog=new THREE.Fog(0x140a08,18,40);
+  const camera=new THREE.PerspectiveCamera(64,wrap.clientWidth/Math.max(1,wrap.clientHeight),0.1,120);
+  camera.position.set(0,1.7,19.5);
+  const ROOM_W=12,ROOM_H=5,ROOM_L=40;
+  const W=ROOM_W/2,H=ROOM_H,L=ROOM_L/2;
+  function wallMaterial(color){return new THREE.MeshStandardMaterial({color:color,roughness:.92,metalness:.02});}
+  const matSideWall=wallMaterial(0x7d211d);
+  const matEndWall=wallMaterial(0x8b2a1f);
+  const matColumn=wallMaterial(0x942c22);
+  const matFloor=new THREE.MeshStandardMaterial({color:0x1e1108,roughness:.5,metalness:.18});
+  const matCeil=new THREE.MeshStandardMaterial({color:0x2a1410,roughness:.95});
+  const matCarpet=new THREE.MeshStandardMaterial({color:0x8a1414,roughness:.95});
+  const matGold=new THREE.MeshStandardMaterial({color:0xc9a24b,roughness:.3,metalness:.85});
+  const matGoldDark=new THREE.MeshStandardMaterial({color:0x8a6a28,roughness:.45,metalness:.6});
+  const matFrame=new THREE.MeshStandardMaterial({color:0x4a3116,roughness:.45,metalness:.45});
+  const matFrameBright=new THREE.MeshStandardMaterial({color:0xd9b260,roughness:.3,metalness:.8});
+  const matRed=new THREE.MeshStandardMaterial({color:0xb01f1a,roughness:.85,side:THREE.DoubleSide});
+  function addPlane(w,h,mat,x,y,z,rx,ry){
+    const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat);
+    m.position.set(x,y,z);m.rotation.set(rx||0,ry||0,0);
+    scene.add(m);return m;
+  }
+  function addBox(w,h,d,x,y,z,mat){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+    m.position.set(x,y,z);scene.add(m);return m;
+  }
+  addPlane(ROOM_W,ROOM_L,matFloor,0,0,0,-Math.PI/2,0);
+  addPlane(ROOM_W,ROOM_L,matCeil,0,H,0,Math.PI/2,0);
+  addPlane(ROOM_L,ROOM_H,matSideWall,-W,H/2,0,0,Math.PI/2);
+  addPlane(ROOM_L,ROOM_H,matSideWall,W,H/2,0,0,-Math.PI/2);
+  addPlane(ROOM_W,ROOM_H,matEndWall,0,H/2,-L,0,0);
+  addPlane(ROOM_W,ROOM_H,matEndWall,0,H/2,L,0,Math.PI);
+  addBox(0.12,0.28,ROOM_L,-W+.06,0.14,0,matGold);
+  addBox(0.12,0.28,ROOM_L,W-.06,0.14,0,matGold);
+  addBox(ROOM_W,0.28,0.12,0,0.14,-L+.06,matGold);
+  addBox(ROOM_W,0.28,0.12,0,0.14,L-.06,matGold);
+  addBox(0.18,0.16,ROOM_L,-W+.1,H-.3,0,matGoldDark);
+  addBox(0.18,0.16,ROOM_L,W-.1,H-.3,0,matGoldDark);
+  addBox(ROOM_W,0.16,0.18,0,H-.3,-L+.1,matGoldDark);
+  addBox(ROOM_W,0.16,0.18,0,H-.3,L-.1,matGoldDark);
+  for(let z=-L+3;z<=L-3;z+=4){
+    addBox(0.34,H,0.42,-W+.08,H/2,z,matColumn);
+    addBox(0.34,H,0.42,W-.08,H/2,z,matColumn);
+    addBox(0.5,0.3,0.6,-W+.08,H-.15,z,matGoldDark);
+    addBox(0.5,0.3,0.6,W-.08,H-.15,z,matGoldDark);
+  }
+  addPlane(3.6,ROOM_L-4,matCarpet,0,.015,0,-Math.PI/2,0);
+  addBox(0.08,.03,ROOM_L-4,-1.84,.03,0,matGold);
+  addBox(0.08,.03,ROOM_L-4,1.84,.03,0,matGold);
+  function starShape(size){
+    var s=new THREE.Shape();
+    for(var i=0;i<10;i++){
+      var r=i%2===0?size:size*0.42;
+      var a=-Math.PI/2+i*Math.PI/5;
+      var x=Math.cos(a)*r,y=Math.sin(a)*r;
+      if(i===0)s.moveTo(x,y);else s.lineTo(x,y);
+    }
+    return s;
+  }
+  const floorStarGeo=new THREE.ShapeGeometry(starShape(.18));
+  for(let z=-L+3;z<=L-3;z+=2.6){
+    const s1=new THREE.Mesh(floorStarGeo,matGold);
+    s1.rotation.x=-Math.PI/2;s1.position.set(-1.1,.04,z);scene.add(s1);
+    const s2=s1.clone();s2.position.x=1.1;scene.add(s2);
+  }
+  const bannerTexts=['革命理想高于天','为人民服务','不到长城非好汉','中国共产党万岁','人民英雄永垂不朽'];
+  bannerTexts.forEach((txt,i)=>{
+    var z=L-8-i*8;
+    var bc=makeTextCanvas(txt,512,128,{bg:'#5a1010',gold:'#ecd39a',titleSize:40});
+    var tex=new THREE.CanvasTexture(bc);tex.encoding=THREE.sRGBEncoding;
+    var bm=new THREE.MeshStandardMaterial({map:tex,roughness:.8,emissive:0x2a0c08,emissiveIntensity:.3});
+    var b1=new THREE.Mesh(new THREE.PlaneGeometry(2.4,.62),bm);
+    b1.position.set(0,3.72,z);scene.add(b1);
+    var b2=b1.clone();b2.position.set(0,3.72,-z);scene.add(b2);
+  });
+  const lampMat=new THREE.MeshBasicMaterial({color:0xf4d99a});
+  const lampGlow=new THREE.MeshStandardMaterial({color:0x6a4a1e,roughness:.4,emissive:0xffcf8a,emissiveIntensity:.8});
+  for(let z=-L+4;z<=L-4;z+=6){
+    const lamp=new THREE.Mesh(new THREE.BoxGeometry(1.2,.1,1.8),lampMat);
+    lamp.position.set(0,H-.06,z);scene.add(lamp);
+    const rim=new THREE.Mesh(new THREE.BoxGeometry(1.32,.12,1.92),lampGlow);
+    rim.position.set(0,H-.06,z);scene.add(rim);
+    const pl=new THREE.PointLight(0xffd9a0,.55,12);
+    pl.position.set(0,H-.6,z);scene.add(pl);
+  }
+  for(let z=-L+5;z<=L-5;z+=5.2){
+    const geo=new THREE.ShapeGeometry(starShape(.22));
+    const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0xc1272d,emissive:0x8a1010,emissiveIntensity:.7,roughness:.5}));
+    m.rotation.x=Math.PI/2;m.position.set(0,H-.14,z);scene.add(m);
+  }
+  scene.add(new THREE.AmbientLight(0xffe6c8,.32));
+  const dir=new THREE.DirectionalLight(0xffe8cc,.5);
+  dir.position.set(0,8,10);scene.add(dir);
+  const redEnd=new THREE.PointLight(0xc1272d,.7,16);redEnd.position.set(0,2.6,-L+3);scene.add(redEnd);
+  const redStart=new THREE.PointLight(0xc1272d,.6,14);redStart.position.set(0,2.4,L-3);scene.add(redStart);
+  function makeTorch(x,z){
+    const stand=new THREE.Mesh(new THREE.CylinderGeometry(.06,.09,1.25,10),matGoldDark);
+    stand.position.set(x,.62,z);scene.add(stand);
+    const bowl=new THREE.Mesh(new THREE.CylinderGeometry(.14,.08,.16,12),matGold);
+    bowl.position.set(x,1.3,z);scene.add(bowl);
+    const flame=new THREE.Mesh(new THREE.SphereGeometry(.13,10,10),new THREE.MeshBasicMaterial({color:0xffb347}));
+    flame.position.set(x,1.5,z);scene.add(flame);
+    const l=new THREE.PointLight(0xff7a2a,.9,5);l.position.set(x,1.55,z);scene.add(l);
+    return flame;
+  }
+  const torches=[makeTorch(-2.2,L-1.2),makeTorch(2.2,L-1.2),makeTorch(-2.6,-L+1.2),makeTorch(2.6,-L+1.2)];
+  const flagW=2.2,flagH=1.35;
+  const flagGeo=new THREE.PlaneGeometry(flagW,flagH,20,10);
+  const flag=new THREE.Mesh(flagGeo,matRed);
+  flag.position.set(0,3.2,L-1.4);scene.add(flag);
+  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,3.6,10),matGold);
+  pole.position.set(-flagW/2,1.9,L-1.4);scene.add(pole);
+  const poleTop=new THREE.Mesh(new THREE.SphereGeometry(.09,12,12),matGold);
+  poleTop.position.set(-flagW/2,3.75,L-1.4);scene.add(poleTop);
+  const flagStarGeo=new THREE.ShapeGeometry(starShape(.16));
+  const fstar=new THREE.Mesh(flagStarGeo,new THREE.MeshBasicMaterial({color:0xf5d274,side:THREE.DoubleSide}));
+  fstar.position.set(-flagW/2+.55,3.55,L-1.45);scene.add(fstar);
+  const flagPos=flagGeo.attributes.position;
+  function createWallArtwork(art){
+    var x=art.side*(W-.2);
+    var frameW=3.0,frameH=2.2;
+    var outer=new THREE.Mesh(new THREE.BoxGeometry(.16,frameH+.28,frameW+.28),matFrame);
+    outer.position.set(x,2.35,art.z);scene.add(outer);
+    var inner=new THREE.Mesh(new THREE.BoxGeometry(.06,frameH+.1,frameW+.1),matFrameBright);
+    inner.position.set(x-art.side*.02,2.35,art.z);scene.add(inner);
+    var mat=new THREE.MeshStandardMaterial({color:0x3a2018,roughness:.85});
+    var plane=new THREE.Mesh(new THREE.PlaneGeometry(frameW,frameH),mat);
+    plane.position.set(x-art.side*.1,2.35,art.z);
+    plane.rotation.y=art.side>0?-Math.PI/2:Math.PI/2;
+    scene.add(plane);
+    var plaque=new THREE.Mesh(new THREE.BoxGeometry(.05,.22,1.1),matGold);
+    plaque.position.set(x-art.side*.06,3.68,art.z);scene.add(plaque);
+    const littleStar=new THREE.Mesh(new THREE.ShapeGeometry(starShape(.09)),
+      new THREE.MeshStandardMaterial({color:0xf5d274,emissive:0x8a5a10,emissiveIntensity:.5,side:THREE.DoubleSide}));
+    littleStar.position.set(x-art.side*.08,3.68,art.z);
+    littleStar.rotation.y=art.side>0?-Math.PI/2:Math.PI/2;
+    scene.add(littleStar);
+    const sl=new THREE.SpotLight(0xffe0b0,.6,6,Math.PI/5,.5,1.2);
+    sl.position.set(art.side*(W-.6),3.9,art.z);
+    sl.target.position.set(x-art.side*.2,2.3,art.z);
+    scene.add(sl);scene.add(sl.target);
+    art.art=plane;
+    art.objects=[outer,inner,plane,plaque,littleStar,sl,sl.target];
+    return plane;
+  }
+  function createEndMural(){
+    var x=-L+.14;
+    var Wm=5.4,Hm=3.4;
+    var outer=new THREE.Mesh(new THREE.BoxGeometry(Wm+.36,Hm+.36,.16),matFrame);
+    outer.position.set(0,2.55,x);scene.add(outer);
+    var inner=new THREE.Mesh(new THREE.BoxGeometry(Wm+.14,Hm+.14,.08),matFrameBright);
+    inner.position.set(0,2.55,x+.02);scene.add(inner);
+    var mat=new THREE.MeshStandardMaterial({color:0x3a2018,roughness:.85});
+    var plane=new THREE.Mesh(new THREE.PlaneGeometry(Wm,Hm),mat);
+    plane.position.set(0,2.55,x+.08);scene.add(plane);
+    END_MURAL.art=plane;
+    END_MURAL.objects=[outer,inner,plane];
+    var crown=new THREE.Mesh(new THREE.ShapeGeometry(starShape(.28)),
+      new THREE.MeshStandardMaterial({color:0xf5d274,emissive:0x8a5a10,emissiveIntensity:.6,side:THREE.DoubleSide}));
+    crown.position.set(0,4.62,x+.1);scene.add(crown);
+    var sl=new THREE.SpotLight(0xffe0b0,1.1,12,Math.PI/4,.4,1.1);
+    sl.position.set(0,4.6,-L+4);sl.target.position.set(0,2.5,-L+.2);
+    scene.add(sl);scene.add(sl.target);
+  }
+  ARTWORKS.forEach(createWallArtwork);
+  createEndMural();
+  const artObjects=ARTWORKS.concat([END_MURAL]);
+  let loaded=0;
+  const total=artObjects.length;
+  function updateLoad(){
+    var pct=Math.round(loaded/total*100);
+    loadFill.style.width=pct+'%';
+    loadPct.textContent=pct+'%';
+    if(loaded>=total){
+      loadTip.textContent='布置完成，欢迎参观';
+      setTimeout(function(){loading.classList.add('done');},350);
+    }
+  }
+  function applyTexture(art,canvasOrImg){
+    var tex=new THREE.Texture(canvasOrImg);
+    tex.needsUpdate=true;
+    tex.encoding=THREE.sRGBEncoding;
+    tex.anisotropy=4;
+    if(art.art.material.map)art.art.material.map.dispose();
+    art.art.material=new THREE.MeshStandardMaterial({map:tex,roughness:.8,metalness:0,emissive:0x2a1408,emissiveMap:tex,emissiveIntensity:.18});
+  }
+  function artSettled(art){if(art._done)return;art._done=true;loaded++;updateLoad();}
+  function loadArt(art){
+    var dom=document.getElementById('img-'+art.key);
+    function useReal(){
+      if(dom&&dom.naturalWidth>0)applyTexture(art,dom);
+      else{applyTexture(art,makePrintCanvas(art.key,art.title));}
+      artSettled(art);
+    }
+    function usePrint(){applyTexture(art,makePrintCanvas(art.key,art.title));artSettled(art);}
+    if(!dom){usePrint();return;}
+    if(dom.complete){dom.naturalWidth>0?useReal():usePrint();return;}
+    dom.addEventListener('load',useReal);
+    dom.addEventListener('error',usePrint);
+  }
+  artObjects.forEach(a=>loadArt(a,false));
+  setTimeout(function(){
+    artObjects.forEach(a=>{
+      if(!a._done){applyTexture(a,makePrintCanvas(a.key,a.title));artSettled(a);}
+    });
+  },15000);
+  const raycaster=new THREE.Raycaster();
+  const mouse=new THREE.Vector2();
+  let focusArt=null;
+  let touring=true;
+  let dragging=false,moved=false;
+  let lastX=0,lastY=0;
+  let yaw=0,pitch=0;
+  const START=new THREE.Vector3(0,1.7,19.5);
+  const tourPos=START.clone();
+  camera.lookAt(0,1.7,10);
+  function showArtInfo(art){
+    document.getElementById('artDate').textContent=art.date;
+    document.getElementById('artTitle').textContent=art.title;
+    document.getElementById('artDesc').textContent=art.desc;
+    document.getElementById('artSpeak').textContent='AI 讲解';
+    document.getElementById('artSpeak').classList.remove('playing');
+    document.getElementById('artSpeak').setAttribute('data-art',art.key);
+    infoBox.classList.add('show');
+    playNarration(art,document.getElementById('artSpeak'));
+  }
+  function exitFocus(){
+    focusArt=null;
+    infoBox.classList.remove('show');
+    tourEnd.classList.remove('show');
+    stopAllAudio();
+    document.getElementById('artSpeak').classList.remove('playing');
+    document.getElementById('artSpeak').textContent='AI 讲解';
+  }
+  function resetTour(){
+    exitFocus();
+    tourPos.copy(START);
+    yaw=0;pitch=0;
+    touring=true;
+    document.getElementById('tourPause').textContent='暂停巡游';
+    tourEnd.classList.remove('show');
+  }
+  window.__hallPause=function(btn){
+    stopAllAudio();exitFocus();
+    touring=!touring;
+    btn.textContent=touring?'暂停巡游':'继续巡游';
+  };
+  window.__hallReset=resetTour;
+  window.__hallClose=exitFocus;
+  window.__hallSpeak=function(btn){
+    if(!focusArt)return;
+    if(btn.classList.contains('playing')){stopAllAudio();btn.classList.remove('playing');btn.textContent='AI 讲解';return;}
+    if(currentUtter){stopAllAudio();btn.textContent='AI 讲解';return;}
+    playNarration(focusArt,btn);
+  };
+  function onPointerDown(e){
+    dragging=true;moved=false;
+    const p=e.touches?e.touches[0]:e;
+    lastX=p.clientX;lastY=p.clientY;
+    wrap.classList.add('dragging');
+  }
+  function onPointerMove(e){
+    if(!dragging)return;
+    const p=e.touches?e.touches[0]:e;
+    var dx=p.clientX-lastX,dy=p.clientY-lastY;
+    if(Math.abs(dx)+Math.abs(dy)>5)moved=true;
+    if(focusArt){
+      yaw-=dx*0.004;yaw=Math.max(-1.2,Math.min(1.2,yaw));
+      pitch-=dy*0.003;pitch=Math.max(-0.5,Math.min(0.5,pitch));
+    }else{
+      yaw-=dx*0.003;yaw=Math.max(-1.0,Math.min(1.0,yaw));
+      pitch-=dy*0.0025;pitch=Math.max(-0.4,Math.min(0.4,pitch));
+    }
+    lastX=p.clientX;lastY=p.clientY;
+  }
+  function onPointerUp(e){
+    if(!dragging)return;
+    dragging=false;
+    wrap.classList.remove('dragging');
+    if(!moved){
+      const rect=renderer.domElement.getBoundingClientRect();
+      const p=e.changedTouches?e.changedTouches[0]:e;
+      mouse.x=((p.clientX-rect.left)/rect.width)*2-1;
+      mouse.y=-((p.clientY-rect.top)/rect.height)*2+1;
+      raycaster.setFromCamera(mouse,camera);
+      const planes=artObjects.map(a=>a.art);
+      const hits=raycaster.intersectObjects(planes,false);
+      if(hits.length){
+        const hit=hits[0].object;
+        const art=artObjects.find(a=>a.art===hit);
+        if(art)focusOn(art);
+      }else{
+        resetTour();
+      }
+    }
+  }
+  renderer.domElement.addEventListener('mousedown',onPointerDown);
+  window.addEventListener('mousemove',onPointerMove);
+  window.addEventListener('mouseup',onPointerUp);
+  renderer.domElement.addEventListener('touchstart',onPointerDown,{passive:true});
+  window.addEventListener('touchmove',onPointerMove,{passive:true});
+  window.addEventListener('touchend',onPointerUp);
+  renderer.domElement.addEventListener('wheel',function(e){
+    e.preventDefault();
+    if(focusArt){
+      const dir=new THREE.Vector3();camera.getWorldDirection(dir);
+      camera.position.addScaledVector(dir,e.deltaY>0?0.4:-0.4);
+    }
+  },{passive:false});
+  function focusOn(art){
+    stopAllAudio();
+    focusArt=art;
+    touring=false;
+    yaw=0;pitch=0;
+    if(art.isEnd){
+      camera.position.set(0,2.55,-L+5.5);
+      camera.lookAt(0,2.55,-L+.14);
+    }else{
+      const cx=art.side*(W-.2);
+      camera.position.set(cx-art.side*3.4,2.35,art.z);
+      camera.lookAt(cx,2.35,art.z);
+    }
+    showArtInfo(art);
+  }
+  function onResize(){
+    var w=wrap.clientWidth,h=wrap.clientHeight;
+    camera.aspect=w/h;camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+  }
+  window.addEventListener('resize',onResize);
+  let running=false,rafId=null,lastT=performance.now();
+  function animate(now){
+    if(!running)return;
+    lastT=now;
+    const t=now/1000;
+    for(var i=0;i<flagPos.count;i++){
+      const x=flagPos.getX(i);
+      const amp=.18*((x+flagW/2)/flagW);
+      flagPos.setZ(i,Math.sin(t*3+x*3)*amp);
+    }
+    flagPos.needsUpdate=true;
+    torches.forEach((fl,i)=>{fl.scale.setScalar(1+Math.sin(t*8+i)*.18);});
+    if(touring&&!focusArt){
+      tourPos.z-=0.01;
+      if(tourPos.z<=-L-.5){
+        tourPos.z=-L-.5;
+        touring=false;
+        tourEnd.classList.add('show');
+      }
+      camera.position.lerp(tourPos,.05);
+      camera.lookAt(new THREE.Vector3(0,1.7,tourPos.z-8));
+    }else if(focusArt){
+      const a=focusArt;
+      const fcx=a.isEnd?0:a.side*(W-.2);
+      const fcy=a.isEnd?2.55:2.35;
+      camera.lookAt(fcx+Math.sin(yaw)*4,fcy+Math.tan(pitch)*4,a.z);
+    }
+    renderer.render(scene,camera);
+    rafId=requestAnimationFrame(animate);
+  }
+  function start(){if(running)return;running=true;lastT=performance.now();rafId=requestAnimationFrame(animate);}
+  function stop(){running=false;cancelAnimationFrame(rafId);}
+  const io=new IntersectionObserver(es=>es.forEach(en=>{
+    if(en.isIntersecting){onResize();start();}else{stop();}
+  }),{threshold:.05});
+  io.observe(wrap);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+  setTimeout(function(){hint.classList.add('fade');},8000);
+}
+
+/* ----- 2D 平面兜底墙 + 展品清单（任何模式都渲染清单） ----- */
+(function(){
+  const fbGrid=document.getElementById('fbGrid');
+  const listGrid=document.getElementById('listGrid');
+  const items=HALL_ITEMS;
+  if(fbGrid){
+    fbGrid.innerHTML=items.map(function(a,i){
+      var dom=document.getElementById('img-'+a.key);
+      var src=dom?dom.src:'';
+      return '<div class="fb-card">'
+        +(src?'<img src="'+src+'" alt="'+a.title+'">':'<div style="height:190px;background:#3a2018"></div>')
+        +'<div class="fb-body"><div class="fb-date">'+String(i+1).padStart(2,'0')+' · '+a.date+'</div>'
+        +'<div class="fb-title">'+a.title+'</div>'
+        +'<div class="fb-desc">'+a.desc.slice(0,60)+'…</div></div></div>';
+    }).join('');
+  }
+  if(listGrid){
+    listGrid.innerHTML=items.map(function(a,i){
+      return '<div class="list-item"><span class="no">'+String(i+1).padStart(2,'0')+'</span>'
+        +'<div><div class="lt">'+a.title+'</div>'
+        +'<div class="ld"><b>'+a.date+'</b> — '+a.desc.slice(0,46)+'…</div></div></div>';
+    }).join('');
+  }
+})();
+
+/* ----- three.js 懒加载 + 所有按钮提前绑定（防僵尸按钮） ----- */
+(function bootHall(){
+  const wrap=document.getElementById('threeWrap');
+  if(!wrap)return;
+  const hall3dBox=document.querySelector('.hall3d');
+  const fallback=document.getElementById('fallbackWall');
+  function fail(){if(hall3dBox)hall3dBox.style.display='none';if(fallback)fallback.classList.add('show');}
+  let booted=false;
+  function boot(){
+    if(booted)return;booted=true;
+    if(!webglOK()){fail();return;}
+    if(window.THREE){initHall3D();return;}
+    const CDNS=['assets/vendor/three.min.js'];
+    let ci=0;
+    function loadNext(){
+      if(ci>=CDNS.length){fail();return;}
+      const sc=document.createElement('script');
+      sc.src=CDNS[ci++];
+      sc.onload=()=>{if(window.THREE){initHall3D();}else{loadNext();}};
+      sc.onerror=()=>{loadNext();};
+      document.head.appendChild(sc);
+    }
+    loadNext();
+    setTimeout(()=>{if(!window.THREE)fail();},15000);
+  }
+  const tourPauseBtn=document.getElementById('tourPause');
+  const tourResetBtn=document.getElementById('tourReset');
+  const tourEndResetBtn=document.getElementById('tourEndReset');
+  const artCloseBtn=document.getElementById('artClose');
+  const artResumeBtn=document.getElementById('artResume');
+  const artSpeakBtn=document.getElementById('artSpeak');
+  if(tourPauseBtn)tourPauseBtn.addEventListener('click',function(){
+    if(window.__hallPause)window.__hallPause(this);else{boot();this.textContent='展厅加载中…';}
+  });
+  if(tourResetBtn)tourResetBtn.addEventListener('click',()=>{if(window.__hallReset)window.__hallReset();else boot();});
+  if(tourEndResetBtn)tourEndResetBtn.addEventListener('click',()=>{if(window.__hallReset)window.__hallReset();else boot();});
+  if(artCloseBtn)artCloseBtn.addEventListener('click',()=>{if(window.__hallClose)window.__hallClose();else boot();});
+  if(artResumeBtn)artResumeBtn.addEventListener('click',()=>{if(window.__hallClose)window.__hallClose();else boot();});
+  if(artSpeakBtn)artSpeakBtn.addEventListener('click',()=>{if(window.__hallSpeak)window.__hallSpeak(this);else boot();});
+  if('IntersectionObserver' in window){
+    const io3=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){boot();io3.disconnect();}}),{rootMargin:'300px'});
+    io3.observe(wrap);
+  }else{boot();}
+})();
+
+/* ================= 纪念海报生成（Canvas，本地下载） ================= */
+document.getElementById('posterBtn').addEventListener('click',function(){
+  const flowers=+(localStorage.getItem('nx_flower')||0);
+  let msgs=[];try{msgs=JSON.parse(localStorage.getItem('nx_msgs')||'[]');}catch(e){msgs=[];}
+  const last=msgs[0];
+  const c=document.createElement('canvas');c.width=750;c.height=1200;
+  const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,1200);
+  g.addColorStop(0,'#3a120d');g.addColorStop(.55,'#1d0e0b');g.addColorStop(1,'#120806');
+  x.fillStyle=g;x.fillRect(0,0,750,1200);
+  // 暗纹
+  x.fillStyle='rgba(201,162,75,0.05)';
+  for(let i=0;i<22;i++){x.beginPath();x.moveTo(0,i*58);x.lineTo(750,i*58+30);x.lineTo(750,i*58+58);x.lineTo(0,i*58+28);x.fill();}
+  // 双框
+  x.strokeStyle='#c9a24b';x.lineWidth=4;x.strokeRect(36,36,678,1128);
+  x.lineWidth=1.5;x.strokeRect(50,50,650,1098);
+  // 垛口纹
+  x.strokeStyle='#c9a24b';x.lineWidth=2;
+  for(let i=0;i<24;i++){const bx=62+i*26;x.beginPath();x.moveTo(bx,66);x.lineTo(bx,60);x.lineTo(bx+13,60);x.lineTo(bx+13,66);x.stroke();}
+  // 红星
+  function star(cx,cy,r,color){
+    x.beginPath();
+    for(let i=0;i<10;i++){const ang=Math.PI/5*i-Math.PI/2;const rr=i%2?r*0.42:r;
+      x[i?'lineTo':'moveTo'](cx+Math.cos(ang)*rr,cy+Math.sin(ang)*rr);}
+    x.closePath();x.fillStyle=color;x.fill();
+  }
+  star(375,150,56,'#c1272d');
+  star(375,150,24,'#c9a24b');
+  // 标题
+  x.textAlign='center';
+  x.fillStyle='#e8cd8f';
+  x.font='900 112px "Noto Serif SC",serif';
+  x.fillText('塞上忠魂',375,292);
+  x.font='30px "Noto Serif SC",serif';x.fillStyle='#ddc08a';
+  x.fillText('宁夏革命烈士精神数字画廊',375,352);
+  // 诗句
+  x.font='40px "Noto Serif SC",serif';x.fillStyle='#f4ecdd';
+  x.fillText('不到长城非好汉',375,452);
+  x.font='22px "Noto Sans SC",sans-serif';x.fillStyle='#a99882';
+  x.fillText('—— 毛泽东《清平乐·六盘山》',375,492);
+  // 中部板块
+  x.fillStyle='rgba(201,162,75,.1)';x.fillRect(110,540,530,260);
+  x.strokeStyle='rgba(201,162,75,.55)';x.lineWidth=2;x.strokeRect(110,540,530,260);
+  x.font='30px "Noto Serif SC",serif';x.fillStyle='#ddc08a';
+  x.fillText('我已为塞上英烈献花',375,612);
+  x.font='96px Georgia,"Times New Roman",serif';x.fillStyle='#e8cd8f';
+  x.fillText(flowers+' 朵',375,722);
+  if(last){
+    x.font='22px "Noto Serif SC",serif';x.fillStyle='#f4ecdd';
+    const txt='“'+last.c.slice(0,24)+(last.c.length>24?'…':'')+'”';
+    x.fillText(txt,375,772);
+    x.font='18px "Noto Sans SC",sans-serif';x.fillStyle='#cbbfa9';
+    x.fillText('—— '+last.n,500,800);
+  }
+  // 日期与誓言
+  const d=new Date();
+  x.fillStyle='#a99882';x.font='22px "Noto Sans SC",sans-serif';
+  x.fillText(d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 · 宁夏',375,880);
+  x.fillStyle='#ddc08a';x.font='32px "Noto Serif SC",serif';
+  x.fillText('山河无恙 · 吾辈自强',375,942);
+  // 印章
+  x.fillStyle='#a82417';x.fillRect(530,975,110,110);
+  x.strokeStyle='#ddc08a';x.lineWidth=2;x.strokeRect(538,983,94,94);
+  x.fillStyle='#ddc08a';x.font='bold 32px "Noto Serif SC",serif';
+  x.fillText('传承',585,1024);x.fillText('有我',585,1063);
+  x.fillStyle='#6f6252';x.font='17px "Noto Sans SC",sans-serif';
+  x.fillText('红色之旅 · 追梦铸魂 ｜ 科技+创意，讲好中国故事',375,1140);
+  const a=document.createElement('a');
+  a.download='塞上忠魂-纪念海报.png';
+  a.href=c.toDataURL('image/png');
+  a.click();
+});
+</script>
+</body>
+</html>
